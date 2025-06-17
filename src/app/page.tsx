@@ -5,16 +5,17 @@ import EventForm from '@/components/EventForm';
 import EventList from '@/components/EventList';
 import DownloadButton from '@/components/DownloadButton';
 import { useState } from 'react';
+import { CalendarEvent } from '@/lib/icsGenerator';
 
 export default function HomePage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
 
-  const addEvent = (event: any) => {
-    setEvents([...events, event]);
+  const handleAdd = (event: CalendarEvent) => {
+    setEvents((prev) => [...prev, event]);
   };
 
-  const removeEvent = (index: number) => {
-    setEvents(events.filter((_, i) => i !== index));
+  const handleRemove = (id: string) => {
+    setEvents((prev) => prev.filter((e) => e.id !== id));
   };
 
   return (
@@ -28,8 +29,8 @@ export default function HomePage() {
           한국어.
         </p>
 
-        <EventForm onAddEvent={addEvent} />
-        <EventList events={events} onRemove={removeEvent} />
+        <EventForm onAdd={handleAdd} onRemove={handleRemove} events={events} />
+        {/* <EventList events={events} onRemove={handleRemove} /> */}
         <DownloadButton events={events} />
 
         <footer className='mt-16 text-xs text-gray-400'>

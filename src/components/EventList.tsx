@@ -1,5 +1,7 @@
 'use client';
 
+import { CalendarEvent } from '@/lib/icsGenerator';
+
 type EventData = {
   title: string;
   date: string;
@@ -9,8 +11,8 @@ type EventData = {
 };
 
 type EventListProps = {
-  events: EventData[];
-  onDelete: (index: number) => void;
+  events: CalendarEvent[];
+  onRemove: (id: string) => void;
 };
 
 export default function EventList({ events, onDelete }: EventListProps) {

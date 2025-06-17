@@ -2,7 +2,7 @@
 'use client';
 
 import { saveAs } from 'file-saver';
-import { generateICSContent } from '@/lib/icsGenerator';
+import { CalendarEvent, generateICSContent } from '@/lib/icsGenerator';
 
 type EventData = {
   title: string;
@@ -13,7 +13,7 @@ type EventData = {
 };
 
 type Props = {
-  events: EventData[];
+  events: CalendarEvent[];
 };
 
 export default function DownloadButton({ events }: Props) {
