@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Calandar Exporter
 
-## Getting Started
+---
 
-First, run the development server:
+### 간편하게 일정을 만들고, 다운로드 하여 나의 캘린더 앱에 등록하기 위한 목적의 웹앱입니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 簡単にスケジュールを作成し、ダウンロードして自分のカレンダーアプリに登録するための目的のウェブアプリです。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### It is a web app for the purpose of simply creating a schedule, downloading it, and registering it in my calendar app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# 技術スタック (Tech Stack)
 
-## Learn More
+- フレームワーク: NextJS + TypeScript
+<!-- - 状態管理: Zustand -->
+- CSS: Tailwind CSS
+<!-- - 画像処理: 背景画像、SVGロゴ読み込み、line-clamp テキスト制限 -->
+- i18n: next-intl
+- その他: file-saver による「〇〇〇.ics」 download
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
