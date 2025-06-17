@@ -1,0 +1,14 @@
+{
+  "Home": {
+    "title": "予定ジェネレーター",
+    "description": "複数の予定を1つのカレンダーファイルにまとめましょう。",
+    "addEvent": "予定を追加",
+    "delete": "削除",
+    "download": "カレンダーをダウンロード",
+    "location": "場所",
+    "phone": "電話番号",
+    "url": "リンク",
+    "startDate": "開始日",
+    "endDate": "終了日"
+  }
+}

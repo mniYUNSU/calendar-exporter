@@ -1,0 +1,14 @@
+{
+  "Home": {
+    "title": "Schedule Generator",
+    "description": "Combine multiple events into one calendar file.",
+    "addEvent": "Add Event",
+    "delete": "Delete",
+    "download": "Download Calendar",
+    "location": "Location",
+    "phone": "Phone Number",
+    "url": "URL",
+    "startDate": "Start Date",
+    "endDate": "End Date"
+  }
+}
