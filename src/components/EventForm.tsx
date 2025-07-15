@@ -3,6 +3,8 @@
 import { CalendarEvent } from '@/lib/icsGenerator';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import DateTimeInput from './DateTimeInput';
+import CustomDateTimePicker from './CustomDateTimePicker';
 
 const LABELS = {
   ko: {
@@ -44,17 +46,24 @@ export default function EventForm({
   onAdd,
   onRemove,
   events,
-  lang = 'en'
+  lang
 }: {
   onAdd: (event: CalendarEvent) => void;
   onRemove: (id: string) => void;
   events: CalendarEvent[];
-  lang?: keyof typeof LABELS;
+  lang: keyof typeof LABELS;
 }) {
   const labels = LABELS[lang];
   const [title, setTitle] = useState('');
-  const [start, setStart] = useState('');
-  const [end, setEnd] = useState('');
+
+  function getLocalDateTimeForInput() {
+    const now = new Date();
+    const offset = now.getTimezoneOffset(); // 분 단위 (-540 for UTC+9)
+    const localDate = new Date(now.getTime() - offset * 60 * 1000);
+    return localDate.toISOString().slice(0, 16);
+  }
+  const [start, setStart] = useState(getLocalDateTimeForInput());
+  const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
@@ -73,8 +82,8 @@ export default function EventForm({
       url
     });
     setTitle('');
-    setStart('');
-    setEnd('');
+    setStart(getLocalDateTimeForInput());
+    setEnd(getLocalDateTimeForInput());
     setLocation('');
     setDescription('');
     setPhone('');
@@ -83,13 +92,33 @@ export default function EventForm({
 
   return (
     <div className='space-y-4 p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 rounded-xl shadow-lg w-full max-w-xl mx-auto'>
+      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
+        {labels.title}
+      </label>
       <input
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.title}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <input
+      {/* <DateTimeInput
+        start={start ? new Date(start) : null}
+        end={end ? new Date(end) : null}
+        onChangeStart={(date) => setStart(date?.toISOString() || '')}
+        onChangeEnd={(date) => setEnd(date?.toISOString() || '')}
+        labels={{
+          start: labels.start,
+          end: labels.end
+        }}
+      /> */}
+      <CustomDateTimePicker
+        label={labels.start}
+        value={start}
+        onChange={setStart}
+      />
+      <CustomDateTimePicker label={labels.end} value={end} onChange={setEnd} />
+
+      {/* <input
         type='datetime-local'
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.start}
@@ -102,25 +131,37 @@ export default function EventForm({
         placeholder={labels.end}
         value={end}
         onChange={(e) => setEnd(e.target.value)}
-      />
+      /> */}
+      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
+        {labels.location}
+      </label>
       <input
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.location}
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       />
+      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
+        {labels.description}
+      </label>
       <input
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.description}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
+      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
+        {labels.phone}
+      </label>
       <input
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.phone}
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
+      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
+        {labels.url}
+      </label>
       <input
         className='w-full p-2 border rounded dark:bg-gray-800'
         placeholder={labels.url}
