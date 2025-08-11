@@ -19,12 +19,14 @@ export function generateICSContent(events: CalendarEvent[]): string {
   events.forEach((event) => {
     lines.push('BEGIN:VEVENT');
     lines.push(`UID:${event.id}`);
-    lines.push(`SUMMARY:${event.title}`);
+    lines.push(`SUMMARY:${escapeICSText(event.title)}`);
     lines.push(`DTSTART:${formatDate(event.start)}`);
     lines.push(`DTEND:${formatDate(event.end)}`);
 
-    if (event.phone) lines.push(`CONTACT:Phone, ${event.phone}`);
-    if (event.location) lines.push(`LOCATION:${event.location}`);
+    if (event.phone)
+      lines.push(`CONTACT:${escapeICSText(`Phone, ${event.phone}`)}`);
+    if (event.location)
+      lines.push(`LOCATION:${escapeICSText(event.location)}`);
     if (event.url) lines.push(`URL:${event.url}`);
 
     const descParts = [
@@ -33,6 +35,7 @@ export function generateICSContent(events: CalendarEvent[]): string {
       event.url && `Link: ${event.url}`
     ]
       .filter(Boolean)
+      .map((part) => escapeICSText(part))
       .join('\\n\\n');
 
     if (descParts) lines.push(`DESCRIPTION:${descParts}`);
@@ -48,4 +51,12 @@ export function generateICSContent(events: CalendarEvent[]): string {
 function formatDate(dateStr: string): string {
   const dt = new Date(dateStr);
   return dt.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+function escapeICSText(text: string): string {
+  return text
+    .replace(/\\/g, '\\\\')
+    .replace(/\n/g, '\\n')
+    .replace(/,/g, '\\,')
+    .replace(/;/g, '\\;');
 }
