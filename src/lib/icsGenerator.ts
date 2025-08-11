@@ -25,8 +25,7 @@ export function generateICSContent(events: CalendarEvent[]): string {
 
     if (event.phone)
       lines.push(`CONTACT:${escapeICSText(`Phone, ${event.phone}`)}`);
-    if (event.location)
-      lines.push(`LOCATION:${escapeICSText(event.location)}`);
+    if (event.location) lines.push(`LOCATION:${escapeICSText(event.location)}`);
     if (event.url) lines.push(`URL:${event.url}`);
 
     const descParts = [
@@ -35,7 +34,7 @@ export function generateICSContent(events: CalendarEvent[]): string {
       event.url && `Link: ${event.url}`
     ]
       .filter(Boolean)
-      .map((part) => escapeICSText(part))
+      .map((part) => escapeICSText(part!))
       .join('\\n\\n');
 
     if (descParts) lines.push(`DESCRIPTION:${descParts}`);
