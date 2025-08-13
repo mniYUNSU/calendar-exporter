@@ -34,6 +34,9 @@ export default function EventForm({
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
 
+  const formatDateTime = (value: string) =>
+    new Date(value).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
+
   const handleSubmit = () => {
     if (!title || !start || !end) return;
     onAdd({
@@ -136,20 +139,43 @@ export default function EventForm({
           {events.map((event) => (
             <li
               key={event.id}
-              className='flex items-center justify-between p-4 bg-background border border-primary/10 rounded-lg shadow-sm'
+              className='p-4 bg-background border border-primary/10 rounded-lg shadow-sm'
             >
-              <div>
-                <div className='font-semibold'>{event.title}</div>
-                <div className='text-sm'>
-                  {event.start} ~ {event.end}
+              <div className='flex justify-between'>
+                <div className='space-y-1'>
+                  <div className='font-semibold'>{event.title}</div>
+                  <div className='text-sm'>
+                    {t('start')}: {formatDateTime(event.start)}<br />
+                    {t('end')}: {formatDateTime(event.end)}
+                  </div>
+                  {event.location && (
+                    <div className='text-sm'>
+                      {t('location')}: {event.location}
+                    </div>
+                  )}
+                  {event.description && (
+                    <div className='text-sm'>
+                      {t('description')}: {event.description}
+                    </div>
+                  )}
+                  {event.phone && (
+                    <div className='text-sm'>
+                      {t('phone')}: {event.phone}
+                    </div>
+                  )}
+                  {event.url && (
+                    <div className='text-sm break-all'>
+                      {t('url')}: <a href={event.url} className='text-primary underline'>{event.url}</a>
+                    </div>
+                  )}
                 </div>
+                <button
+                  onClick={() => onRemove(event.id)}
+                  className='text-sm text-red-500 hover:text-red-700'
+                >
+                  {t('delete')}
+                </button>
               </div>
-              <button
-                onClick={() => onRemove(event.id)}
-                className='text-sm text-red-500 hover:text-red-700'
-              >
-                {t('delete')}
-              </button>
             </li>
           ))}
         </ul>
