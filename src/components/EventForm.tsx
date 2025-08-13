@@ -4,7 +4,7 @@ import { CalendarEvent } from '@/lib/icsGenerator';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
-import CustomDateTimePicker from './CustomDateTimePicker';
+import KeyboardDateTimeInput from './KeyboardDateTimeInput';
 
 const LABELS = {
   ko: {
@@ -91,90 +91,80 @@ export default function EventForm({
   };
 
   return (
-    <div className='space-y-4 p-4 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 rounded-xl shadow-lg w-full max-w-xl mx-auto'>
-      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
-        {labels.title}
-      </label>
-      <input
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.title}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      {/* <DateTimeInput
-        start={start ? new Date(start) : null}
-        end={end ? new Date(end) : null}
-        onChangeStart={(date) => setStart(date?.toISOString() || '')}
-        onChangeEnd={(date) => setEnd(date?.toISOString() || '')}
-        labels={{
-          start: labels.start,
-          end: labels.end
-        }}
-      /> */}
-      <CustomDateTimePicker
-        label={labels.start}
-        value={start}
-        onChange={setStart}
-      />
-      <CustomDateTimePicker label={labels.end} value={end} onChange={setEnd} />
-
-      {/* <input
-        type='datetime-local'
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.start}
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
-      />
-      <input
-        type='datetime-local'
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.end}
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
-      /> */}
-      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
-        {labels.location}
-      </label>
-      <input
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.location}
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
-      />
-      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
-        {labels.description}
-      </label>
-      <input
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.description}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
-        {labels.phone}
-      </label>
-      <input
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.phone}
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
-      <label className='mb-1 border text-sm font-medium text-white dark:text-gray-300'>
-        {labels.url}
-      </label>
-      <input
-        className='w-full p-2 border rounded dark:bg-gray-800'
-        placeholder={labels.url}
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-      />
-      <button
-        onClick={handleSubmit}
-        className='w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-      >
+    <div className='space-y-6 p-6 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 rounded-xl shadow-md w-full max-w-xl mx-auto'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <div className='flex flex-col sm:col-span-2'>
+          <label className='text-sm font-medium mb-1'>{labels.title}</label>
+          <input
+            className='input'
+            placeholder={labels.title}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className='sm:col-span-2'>
+          <DateTimeInput
+            start={start ? new Date(start) : null}
+            end={end ? new Date(end) : null}
+            onChangeStart={(date) => setStart(date?.toISOString() || '')}
+            onChangeEnd={(date) => setEnd(date?.toISOString() || '')}
+            labels={{ start: labels.start, end: labels.end }}
+          />
+        </div>
+        <div className='sm:col-span-2'>
+          <KeyboardDateTimeInput
+            label={`${labels.start} (Manual)`}
+            value={start}
+            onChange={setStart}
+          />
+        </div>
+        <div className='sm:col-span-2'>
+          <KeyboardDateTimeInput
+            label={`${labels.end} (Manual)`}
+            value={end}
+            onChange={setEnd}
+          />
+        </div>
+        <div className='flex flex-col sm:col-span-2'>
+          <label className='text-sm font-medium mb-1'>{labels.location}</label>
+          <input
+            className='input'
+            placeholder={labels.location}
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </div>
+        <div className='flex flex-col sm:col-span-2'>
+          <label className='text-sm font-medium mb-1'>{labels.description}</label>
+          <input
+            className='input'
+            placeholder={labels.description}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-sm font-medium mb-1'>{labels.phone}</label>
+          <input
+            className='input'
+            placeholder={labels.phone}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-sm font-medium mb-1'>{labels.url}</label>
+          <input
+            className='input'
+            placeholder={labels.url}
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+          />
+        </div>
+      </div>
+      <button onClick={handleSubmit} className='btn w-full'>
         {labels.add}
       </button>
-
       {events.length > 0 && (
         <ul className='space-y-2 pt-4'>
           {events.map((event) => (
