@@ -4,7 +4,7 @@ import EventForm from '@/components/EventForm';
 import DownloadButton from '@/components/DownloadButton';
 import { useState } from 'react';
 import { CalendarEvent } from '@/lib/icsGenerator';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 
 export default function HomePage() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
@@ -17,9 +17,6 @@ export default function HomePage() {
   const handleRemove = (id: string) => {
     setEvents((prev) => prev.filter((e) => e.id !== id));
   };
-
-  const locale = useLocale();
-  const specificLocale = locale === 'ko' ? 'ko' : locale === 'ja' ? 'ja' : 'en';
 
   return (
     <main className='min-h-screen bg-background text-foreground px-4 py-10 text-center transition-colors'>
@@ -36,7 +33,6 @@ export default function HomePage() {
           onAdd={handleAdd}
           onRemove={handleRemove}
           events={events}
-          lang={specificLocale}
         />
         <DownloadButton events={events} />
 

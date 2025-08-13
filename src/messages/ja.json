@@ -10,5 +10,18 @@
     "url": "リンク",
     "startDate": "開始日",
     "endDate": "終了日"
+  },
+  "EventForm": {
+    "title": "タイトル",
+    "start": "開始時間",
+    "end": "終了時間",
+    "location": "場所",
+    "description": "説明",
+    "phone": "電話番号",
+    "url": "リンク",
+    "add": "予定を追加",
+    "delete": "削除",
+    "manual": "手動入力",
+    "picker": "カレンダー入力"
   }
 }
