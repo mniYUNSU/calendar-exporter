@@ -18,7 +18,7 @@ export default function LocaleSwitcher() {
     <select
       value={currentLocale}
       onChange={handleChange}
-      className='p-2 border rounded text-sm'
+      className='p-2 border rounded-full text-sm bg-background text-foreground hover:bg-primary/10 transition'
     >
       <option value='ko'>한국어</option>
       <option value='en'>English</option>
