@@ -38,7 +38,6 @@ export default function HomePage() {
           events={events}
           lang={specificLocale}
         />
-        {/* <EventList events={events} onRemove={handleRemove} /> */}
         <DownloadButton events={events} />
 
         <footer className='mt-16 text-xs opacity-60'>

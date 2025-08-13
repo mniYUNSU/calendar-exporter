@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko, ja, enUS } from 'date-fns/locale';
@@ -22,14 +21,6 @@ export default function DateTimeInput({
   const locale = useLocale();
   const dateLocale = locale === 'ko' ? ko : locale === 'ja' ? ja : enUS;
 
-  const handleFocus = (e) => {
-    const { target } = e;
-    if (target) {
-      target.readOnly = true; // Make the input read-only
-      target.blur(); // Remove focus to dismiss keyboard (especially on mobile)
-    }
-  };
-
   return (
     <div className='flex flex-col gap-4'>
       <div>
@@ -40,7 +31,6 @@ export default function DateTimeInput({
           onKeyDown={(e) => {
             e.preventDefault();
           }}
-          // onFocus={handleFocus}
           onFocus={(e) => e.target.blur()}
           selected={start}
           onChange={onChangeStart}
