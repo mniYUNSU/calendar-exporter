@@ -33,6 +33,7 @@ export default function EventForm({
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
+  const [showEvents, setShowEvents] = useState(false);
 
   const formatDateTime = (value: string) =>
     new Date(value).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
@@ -59,17 +60,18 @@ export default function EventForm({
   };
 
   return (
-    <div className='card p-6 sm:p-8 space-y-6 animate-fade-in'>
-      <div className='flex justify-end'>
-        <button
-          onClick={() => setManualMode((m) => !m)}
-          className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
-        >
-          {manualMode ? t('picker') : t('manual')}
-        </button>
-      </div>
-      <div className='space-y-4'>
-        <div className='flex flex-col'>
+    <>
+      <div className='card p-6 sm:p-8 space-y-6 animate-fade-in'>
+        <div className='flex justify-end'>
+          <button
+            onClick={() => setManualMode((m) => !m)}
+            className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
+          >
+            {manualMode ? t('picker') : t('manual')}
+          </button>
+        </div>
+        <div className='space-y-4'>
+        <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('title')}</label>
           <input
             className='input'
@@ -92,7 +94,7 @@ export default function EventForm({
             labels={{ start: t('start'), end: t('end') }}
           />
         )}
-        <div className='flex flex-col'>
+        <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('location')}</label>
           <input
             className='input'
@@ -134,53 +136,66 @@ export default function EventForm({
       <button onClick={handleSubmit} className='btn w-full'>
         {t('add')}
       </button>
+      </div>
       {events.length > 0 && (
-        <ul className='space-y-2 pt-4'>
-          {events.map((event) => (
-            <li
-              key={event.id}
-              className='p-4 bg-background/60 border border-primary/10 rounded-lg shadow-sm transition hover:shadow-md'
+        <div className='fixed bottom-4 left-0 right-0 flex justify-center'>
+          <div className='relative'>
+            {showEvents && (
+              <ul className='absolute bottom-full mb-2 w-72 sm:w-80 max-h-60 overflow-y-auto space-y-2'>
+                {events.map((event) => (
+                  <li
+                    key={event.id}
+                    className='p-4 bg-background/60 border border-primary/10 rounded-lg shadow-sm transition hover:shadow-md'
+                  >
+                    <div className='flex justify-between'>
+                      <div className='space-y-1'>
+                        <div className='font-semibold'>{event.title}</div>
+                        <div className='text-sm'>
+                          {t('start')}: {formatDateTime(event.start)}<br />
+                          {t('end')}: {formatDateTime(event.end)}
+                        </div>
+                        {event.location && (
+                          <div className='text-sm'>
+                            {t('location')}: {event.location}
+                          </div>
+                        )}
+                        {event.description && (
+                          <div className='text-sm'>
+                            {t('description')}: {event.description}
+                          </div>
+                        )}
+                        {event.phone && (
+                          <div className='text-sm'>
+                            {t('phone')}: {event.phone}
+                          </div>
+                        )}
+                        {event.url && (
+                          <div className='text-sm break-all'>
+                            {t('url')}: <a href={event.url} className='text-primary underline'>{event.url}</a>
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => onRemove(event.id)}
+                        className='text-sm text-red-500 hover:text-red-700 transition'
+                      >
+                        {t('delete')}
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <button
+              onClick={() => setShowEvents((s) => !s)}
+              className='card px-4 py-2 text-sm shadow-md w-72 sm:w-80'
             >
-              <div className='flex justify-between'>
-                <div className='space-y-1'>
-                  <div className='font-semibold'>{event.title}</div>
-                  <div className='text-sm'>
-                    {t('start')}: {formatDateTime(event.start)}<br />
-                    {t('end')}: {formatDateTime(event.end)}
-                  </div>
-                  {event.location && (
-                    <div className='text-sm'>
-                      {t('location')}: {event.location}
-                    </div>
-                  )}
-                  {event.description && (
-                    <div className='text-sm'>
-                      {t('description')}: {event.description}
-                    </div>
-                  )}
-                  {event.phone && (
-                    <div className='text-sm'>
-                      {t('phone')}: {event.phone}
-                    </div>
-                  )}
-                  {event.url && (
-                    <div className='text-sm break-all'>
-                      {t('url')}: <a href={event.url} className='text-primary underline'>{event.url}</a>
-                    </div>
-                  )}
-                </div>
-                <button
-                  onClick={() => onRemove(event.id)}
-                  className='text-sm text-red-500 hover:text-red-700 transition'
-                >
-                  {t('delete')}
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+              {t('events')} ({events.length})
+            </button>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

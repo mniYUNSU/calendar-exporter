@@ -68,13 +68,13 @@ export default function KeyboardDateTimeInput({ label, value, onChange }: Keyboa
   }, [year, month, day, hour, minute, onChange]);
 
   return (
-    <div className='flex flex-col gap-2 relative'>
+    <div className='flex flex-col gap-2 relative w-full max-w-sm'>
       <label className='text-sm font-medium'>{label}</label>
-      <div className='grid grid-cols-2 sm:grid-cols-5 gap-2'>
+      <div className='flex flex-wrap gap-2'>
         <input
           type='text'
           inputMode='numeric'
-          className='input col-span-2 sm:col-span-1'
+          className='input w-24 text-center'
           placeholder='YYYY'
           value={year}
           onChange={(e) => setYear(e.target.value.replace(/\D/g, ''))}
@@ -82,7 +82,7 @@ export default function KeyboardDateTimeInput({ label, value, onChange }: Keyboa
         <input
           type='text'
           inputMode='numeric'
-          className='input'
+          className='input w-16 text-center'
           placeholder='MM'
           value={month}
           onChange={(e) => setMonth(e.target.value.replace(/\D/g, ''))}
@@ -90,7 +90,7 @@ export default function KeyboardDateTimeInput({ label, value, onChange }: Keyboa
         <input
           type='text'
           inputMode='numeric'
-          className='input'
+          className='input w-16 text-center'
           placeholder='DD'
           value={day}
           onChange={(e) => setDay(e.target.value.replace(/\D/g, ''))}
@@ -98,7 +98,7 @@ export default function KeyboardDateTimeInput({ label, value, onChange }: Keyboa
         <input
           type='text'
           inputMode='numeric'
-          className='input'
+          className='input w-16 text-center'
           placeholder='HH'
           value={hour}
           onChange={(e) => setHour(e.target.value.replace(/\D/g, ''))}
@@ -106,7 +106,7 @@ export default function KeyboardDateTimeInput({ label, value, onChange }: Keyboa
         <input
           type='text'
           inputMode='numeric'
-          className='input'
+          className='input w-16 text-center'
           placeholder='mm'
           value={minute}
           onChange={(e) => setMinute(e.target.value.replace(/\D/g, ''))}
