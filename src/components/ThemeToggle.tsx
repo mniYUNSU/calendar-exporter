@@ -15,7 +15,10 @@ export default function ThemeToggle() {
   };
 
   return (
-    <button onClick={toggleTheme} className="p-2 border rounded text-sm">
+    <button
+      onClick={toggleTheme}
+      className="p-2 border rounded-full text-sm hover:bg-primary/10 transition"
+    >
       {theme === 'dark' ? 'Light' : 'Dark'}
     </button>
   );

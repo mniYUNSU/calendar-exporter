@@ -59,11 +59,11 @@ export default function EventForm({
   };
 
   return (
-    <div className='max-w-2xl mx-auto p-8 bg-background text-foreground rounded-2xl shadow-lg border border-primary/20 space-y-6'>
+    <div className='card p-6 sm:p-8 space-y-6 animate-fade-in'>
       <div className='flex justify-end'>
         <button
           onClick={() => setManualMode((m) => !m)}
-          className='p-2 border rounded text-sm'
+          className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
         >
           {manualMode ? t('picker') : t('manual')}
         </button>
@@ -139,7 +139,7 @@ export default function EventForm({
           {events.map((event) => (
             <li
               key={event.id}
-              className='p-4 bg-background border border-primary/10 rounded-lg shadow-sm'
+              className='p-4 bg-background/60 border border-primary/10 rounded-lg shadow-sm transition hover:shadow-md'
             >
               <div className='flex justify-between'>
                 <div className='space-y-1'>
@@ -171,7 +171,7 @@ export default function EventForm({
                 </div>
                 <button
                   onClick={() => onRemove(event.id)}
-                  className='text-sm text-red-500 hover:text-red-700'
+                  className='text-sm text-red-500 hover:text-red-700 transition'
                 >
                   {t('delete')}
                 </button>
