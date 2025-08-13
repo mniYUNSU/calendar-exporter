@@ -16,7 +16,9 @@ const LABELS = {
     phone: '전화번호',
     url: '웹 링크',
     add: '일정 추가',
-    delete: '삭제'
+    delete: '삭제',
+    manual: '직접 입력',
+    picker: '달력 입력'
   },
   en: {
     title: 'Title',
@@ -27,7 +29,9 @@ const LABELS = {
     phone: 'Phone',
     url: 'URL',
     add: 'Add Event',
-    delete: 'Delete'
+    delete: 'Delete',
+    manual: 'Manual Input',
+    picker: 'Date Picker'
   },
   ja: {
     title: 'タイトル',
@@ -38,7 +42,9 @@ const LABELS = {
     phone: '電話番号',
     url: 'リンク',
     add: '予定を追加',
-    delete: '削除'
+    delete: '削除',
+    manual: '手動入力',
+    picker: 'カレンダー入力'
   }
 };
 
@@ -58,16 +64,18 @@ export default function EventForm({
 
   function getLocalDateTimeForInput() {
     const now = new Date();
-    const offset = now.getTimezoneOffset(); // 분 단위 (-540 for UTC+9)
+    const offset = now.getTimezoneOffset();
     const localDate = new Date(now.getTime() - offset * 60 * 1000);
     return localDate.toISOString().slice(0, 16);
   }
+
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
+  const [manualMode, setManualMode] = useState(false);
 
   const handleSubmit = () => {
     if (!title || !start || !end) return;
@@ -91,9 +99,17 @@ export default function EventForm({
   };
 
   return (
-    <div className='space-y-6 p-6 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 rounded-xl shadow-md w-full max-w-xl mx-auto'>
-      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-        <div className='flex flex-col sm:col-span-2'>
+    <div className='max-w-2xl mx-auto p-8 bg-background text-foreground rounded-2xl shadow-lg border border-primary/20 space-y-6'>
+      <div className='flex justify-end'>
+        <button
+          onClick={() => setManualMode((m) => !m)}
+          className='p-2 border rounded text-sm'
+        >
+          {manualMode ? labels.picker : labels.manual}
+        </button>
+      </div>
+      <div className='space-y-4'>
+        <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{labels.title}</label>
           <input
             className='input'
@@ -102,7 +118,12 @@ export default function EventForm({
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-        <div className='sm:col-span-2'>
+        {manualMode ? (
+          <div className='space-y-4'>
+            <KeyboardDateTimeInput label={labels.start} value={start} onChange={setStart} />
+            <KeyboardDateTimeInput label={labels.end} value={end} onChange={setEnd} />
+          </div>
+        ) : (
           <DateTimeInput
             start={start ? new Date(start) : null}
             end={end ? new Date(end) : null}
@@ -110,22 +131,8 @@ export default function EventForm({
             onChangeEnd={(date) => setEnd(date?.toISOString() || '')}
             labels={{ start: labels.start, end: labels.end }}
           />
-        </div>
-        <div className='sm:col-span-2'>
-          <KeyboardDateTimeInput
-            label={`${labels.start} (Manual)`}
-            value={start}
-            onChange={setStart}
-          />
-        </div>
-        <div className='sm:col-span-2'>
-          <KeyboardDateTimeInput
-            label={`${labels.end} (Manual)`}
-            value={end}
-            onChange={setEnd}
-          />
-        </div>
-        <div className='flex flex-col sm:col-span-2'>
+        )}
+        <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{labels.location}</label>
           <input
             className='input'
@@ -134,7 +141,7 @@ export default function EventForm({
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
-        <div className='flex flex-col sm:col-span-2'>
+        <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{labels.description}</label>
           <input
             className='input'
@@ -143,23 +150,25 @@ export default function EventForm({
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div className='flex flex-col'>
-          <label className='text-sm font-medium mb-1'>{labels.phone}</label>
-          <input
-            className='input'
-            placeholder={labels.phone}
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-        <div className='flex flex-col'>
-          <label className='text-sm font-medium mb-1'>{labels.url}</label>
-          <input
-            className='input'
-            placeholder={labels.url}
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-          />
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          <div className='flex flex-col'>
+            <label className='text-sm font-medium mb-1'>{labels.phone}</label>
+            <input
+              className='input'
+              placeholder={labels.phone}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+          <div className='flex flex-col'>
+            <label className='text-sm font-medium mb-1'>{labels.url}</label>
+            <input
+              className='input'
+              placeholder={labels.url}
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </div>
         </div>
       </div>
       <button onClick={handleSubmit} className='btn w-full'>
@@ -170,7 +179,7 @@ export default function EventForm({
           {events.map((event) => (
             <li
               key={event.id}
-              className='flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded'
+              className='flex items-center justify-between p-4 bg-background border border-primary/10 rounded-lg shadow-sm'
             >
               <div>
                 <div className='font-semibold'>{event.title}</div>
@@ -191,3 +200,4 @@ export default function EventForm({
     </div>
   );
 }
+
