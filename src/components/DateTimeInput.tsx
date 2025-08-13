@@ -24,9 +24,7 @@ export default function DateTimeInput({
   return (
     <div className='flex flex-col gap-4'>
       <div>
-        <label className='text-sm text-gray-300 block mb-1'>
-          {labels.start}
-        </label>
+        <label className='text-sm font-medium mb-1'>{labels.start}</label>
         <DatePicker
           onKeyDown={(e) => {
             e.preventDefault();
@@ -40,11 +38,11 @@ export default function DateTimeInput({
           dateFormat='Pp'
           placeholderText={labels.start}
           locale={dateLocale}
-          className='w-full p-2 border rounded dark:bg-gray-800 dark:text-white'
+          className='input'
         />
       </div>
       <div>
-        <label className='text-sm text-gray-300 block mb-1'>{labels.end}</label>
+        <label className='text-sm font-medium mb-1'>{labels.end}</label>
         <DatePicker
           selected={end}
           onChange={onChangeEnd}
@@ -54,7 +52,7 @@ export default function DateTimeInput({
           dateFormat='Pp'
           placeholderText={labels.end}
           locale={dateLocale}
-          className='w-full p-2 border rounded dark:bg-gray-800 dark:text-white'
+          className='input'
         />
       </div>
     </div>
