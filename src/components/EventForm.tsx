@@ -5,61 +5,18 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
-
-const LABELS = {
-  ko: {
-    title: '일정 제목',
-    start: '시작 시간',
-    end: '종료 시간',
-    location: '장소',
-    description: '설명',
-    phone: '전화번호',
-    url: '웹 링크',
-    add: '일정 추가',
-    delete: '삭제',
-    manual: '직접 입력',
-    picker: '달력 입력'
-  },
-  en: {
-    title: 'Title',
-    start: 'Start Time',
-    end: 'End Time',
-    location: 'Location',
-    description: 'Description',
-    phone: 'Phone',
-    url: 'URL',
-    add: 'Add Event',
-    delete: 'Delete',
-    manual: 'Manual Input',
-    picker: 'Date Picker'
-  },
-  ja: {
-    title: 'タイトル',
-    start: '開始時間',
-    end: '終了時間',
-    location: '場所',
-    description: '説明',
-    phone: '電話番号',
-    url: 'リンク',
-    add: '予定を追加',
-    delete: '削除',
-    manual: '手動入力',
-    picker: 'カレンダー入力'
-  }
-};
+import { useTranslations } from 'next-intl';
 
 export default function EventForm({
   onAdd,
   onRemove,
-  events,
-  lang
+  events
 }: {
   onAdd: (event: CalendarEvent) => void;
   onRemove: (id: string) => void;
   events: CalendarEvent[];
-  lang: keyof typeof LABELS;
 }) {
-  const labels = LABELS[lang];
+  const t = useTranslations('EventForm');
   const [title, setTitle] = useState('');
 
   function getLocalDateTimeForInput() {
@@ -105,23 +62,23 @@ export default function EventForm({
           onClick={() => setManualMode((m) => !m)}
           className='p-2 border rounded text-sm'
         >
-          {manualMode ? labels.picker : labels.manual}
+          {manualMode ? t('picker') : t('manual')}
         </button>
       </div>
       <div className='space-y-4'>
         <div className='flex flex-col'>
-          <label className='text-sm font-medium mb-1'>{labels.title}</label>
+          <label className='text-sm font-medium mb-1'>{t('title')}</label>
           <input
             className='input'
-            placeholder={labels.title}
+            placeholder={t('title')}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         {manualMode ? (
           <div className='space-y-4'>
-            <KeyboardDateTimeInput label={labels.start} value={start} onChange={setStart} />
-            <KeyboardDateTimeInput label={labels.end} value={end} onChange={setEnd} />
+            <KeyboardDateTimeInput label={t('start')} value={start} onChange={setStart} />
+            <KeyboardDateTimeInput label={t('end')} value={end} onChange={setEnd} />
           </div>
         ) : (
           <DateTimeInput
@@ -129,42 +86,42 @@ export default function EventForm({
             end={end ? new Date(end) : null}
             onChangeStart={(date) => setStart(date?.toISOString() || '')}
             onChangeEnd={(date) => setEnd(date?.toISOString() || '')}
-            labels={{ start: labels.start, end: labels.end }}
+            labels={{ start: t('start'), end: t('end') }}
           />
         )}
         <div className='flex flex-col'>
-          <label className='text-sm font-medium mb-1'>{labels.location}</label>
+          <label className='text-sm font-medium mb-1'>{t('location')}</label>
           <input
             className='input'
-            placeholder={labels.location}
+            placeholder={t('location')}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <div className='flex flex-col'>
-          <label className='text-sm font-medium mb-1'>{labels.description}</label>
+          <label className='text-sm font-medium mb-1'>{t('description')}</label>
           <input
             className='input'
-            placeholder={labels.description}
+            placeholder={t('description')}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
           <div className='flex flex-col'>
-            <label className='text-sm font-medium mb-1'>{labels.phone}</label>
+            <label className='text-sm font-medium mb-1'>{t('phone')}</label>
             <input
               className='input'
-              placeholder={labels.phone}
+              placeholder={t('phone')}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
           </div>
           <div className='flex flex-col'>
-            <label className='text-sm font-medium mb-1'>{labels.url}</label>
+            <label className='text-sm font-medium mb-1'>{t('url')}</label>
             <input
               className='input'
-              placeholder={labels.url}
+              placeholder={t('url')}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
             />
@@ -172,7 +129,7 @@ export default function EventForm({
         </div>
       </div>
       <button onClick={handleSubmit} className='btn w-full'>
-        {labels.add}
+        {t('add')}
       </button>
       {events.length > 0 && (
         <ul className='space-y-2 pt-4'>
@@ -191,7 +148,7 @@ export default function EventForm({
                 onClick={() => onRemove(event.id)}
                 className='text-sm text-red-500 hover:text-red-700'
               >
-                {labels.delete}
+                {t('delete')}
               </button>
             </li>
           ))}

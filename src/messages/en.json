@@ -10,5 +10,18 @@
     "url": "URL",
     "startDate": "Start Date",
     "endDate": "End Date"
+  },
+  "EventForm": {
+    "title": "Title",
+    "start": "Start Time",
+    "end": "End Time",
+    "location": "Location",
+    "description": "Description",
+    "phone": "Phone",
+    "url": "URL",
+    "add": "Add Event",
+    "delete": "Delete",
+    "manual": "Manual Input",
+    "picker": "Date Picker"
   }
 }
