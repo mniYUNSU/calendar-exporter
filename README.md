@@ -1,4 +1,12 @@
-# My Calandar Exporter
+![sukegene_logo](./public/logo_sukegene.png)
+
+# My Calendar Exporter - SukeGene(스케제네)
+
+## 일정을 모아, 삶을 단순하게. 스케제네
+
+## 予定をまとめ、暮らしをシンプルに。 スケジェネ
+
+## Unite your plans, simplify your life. SukeGene
 
 ---
 
@@ -7,6 +15,12 @@
 ### 簡単にスケジュールを作成し、ダウンロードして自分のカレンダーアプリに登録するための目的のウェブアプリです。
 
 ### It is a web app for the purpose of simply creating a schedule, downloading it, and registering it in my calendar app.
+
+여러 개의 일정을 하나의 캘린더 파일로 만들어보세요.
+
+Combine multiple events into one calendar file.
+
+複数の予定を 1 つのカレンダーファイルにまとめましょう。
 
 ---
 
