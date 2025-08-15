@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -24,6 +25,13 @@ export default function TutorialModal() {
       setOpen(true);
     }
   }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   const close = () => {
     localStorage.setItem('tutorialSeen', 'true');
@@ -49,45 +57,47 @@ export default function TutorialModal() {
       >
         ?
       </button>
-      {open && (
-        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
-          <div className='bg-white dark:bg-gray-800 p-4 rounded shadow-lg max-w-sm w-full text-center shadow-primary/10'>
-            <div className='overflow-hidden mb-4'>
-              <div
-                className='flex transition-transform duration-500'
-                style={{ transform: `translateX(-${index * 100}%)` }}
-              >
-                {slides.map((slide, i) => (
-                  <div key={i} className='w-full flex-shrink-0'>
-                    <Image
-                      src={slide.src}
-                      alt={slide.text}
-                      width={80}
-                      height={80}
-                      className='mx-auto mb-2'
-                    />
-                    <p>{slide.text}</p>
-                  </div>
-                ))}
+      {open &&
+        createPortal(
+          <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
+            <div className='bg-white dark:bg-gray-800 p-4 rounded shadow-lg max-w-sm w-full text-center shadow-primary/10'>
+              <div className='overflow-hidden mb-4'>
+                <div
+                  className='flex transition-transform duration-500'
+                  style={{ transform: `translateX(-${index * 100}%)` }}
+                >
+                  {slides.map((slide, i) => (
+                    <div key={i} className='w-full flex-shrink-0'>
+                      <Image
+                        src={slide.src}
+                        alt={slide.text}
+                        width={80}
+                        height={80}
+                        className='mx-auto mb-2'
+                      />
+                      <p>{slide.text}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className='flex justify-between items-center'>
-              <span className='text-sm'>
-                {index + 1} / {slides.length}
-              </span>
-              <button onClick={next} className='px-2 py-1 border rounded'>
-                {t('next')}
+              <div className='flex justify-between items-center'>
+                <span className='text-sm'>
+                  {index + 1} / {slides.length}
+                </span>
+                <button onClick={next} className='px-2 py-1 border rounded'>
+                  {t('next')}
+                </button>
+              </div>
+              <button
+                onClick={close}
+                className='mt-4 px-3 py-1 border rounded w-full'
+              >
+                {t('close')}
               </button>
             </div>
-            <button
-              onClick={close}
-              className='mt-4 px-3 py-1 border rounded w-full'
-            >
-              {t('close')}
-            </button>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 }

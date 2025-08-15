@@ -3,6 +3,7 @@
 import EventForm from '@/components/EventForm';
 import DownloadButton from '@/components/DownloadButton';
 import EventList from '@/components/EventList';
+import Footer from '@/components/Footer';
 import { useState } from 'react';
 import { CalendarEvent } from '@/lib/icsGenerator';
 import { useTranslations } from 'next-intl';
@@ -43,8 +44,10 @@ export default function HomePage() {
           />
         </div>
 
+        <DownloadButton events={events} />
+
         {events.length > 0 && (
-          <div className='fixed bottom-4 left-0 right-0 flex justify-center md:hidden'>
+          <div className='sticky bottom-4 left-0 right-0 flex justify-center md:hidden'>
             <div className='relative w-full max-w-md'>
               <div
                 className={`absolute bottom-full mb-2 w-full transition-all duration-300 ${
@@ -69,11 +72,7 @@ export default function HomePage() {
           </div>
         )}
 
-        <DownloadButton events={events} />
-
-        <footer className='pt-6 text-xs opacity-60 text-center'>
-          Made by Yunsu Bae - 다국어 지원 테스트 중
-        </footer>
+        <Footer />
       </div>
     </main>
   );
