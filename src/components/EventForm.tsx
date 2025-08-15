@@ -52,7 +52,7 @@ export default function EventForm({
   };
 
   return (
-    <div className='card p-6 sm:p-8 space-y-6 animate-fade-in w-full md:w-1/2'>
+    <div className='card bg-gradient-to-br from-background to-primary/10 p-6 sm:p-8 space-y-6 animate-fade-in w-full md:w-1/2'>
       <div className='flex justify-end'>
         <button
           onClick={() => setManualMode((m) => !m)}
@@ -73,8 +73,16 @@ export default function EventForm({
         </div>
         {manualMode ? (
           <div className='space-y-4'>
-            <KeyboardDateTimeInput label={t('start')} value={start} onChange={setStart} />
-            <KeyboardDateTimeInput label={t('end')} value={end} onChange={setEnd} />
+            <KeyboardDateTimeInput
+              label={t('start')}
+              value={start}
+              onChange={setStart}
+            />
+            <KeyboardDateTimeInput
+              label={t('end')}
+              value={end}
+              onChange={setEnd}
+            />
           </div>
         ) : (
           <DateTimeInput
@@ -130,4 +138,3 @@ export default function EventForm({
     </div>
   );
 }
-
