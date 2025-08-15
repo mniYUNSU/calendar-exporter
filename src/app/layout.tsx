@@ -8,6 +8,7 @@ import './globals.css';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeProvider from '@/components/ThemeProvider';
 import ThemeToggle from '@/components/ThemeToggle';
+import TutorialModal from '@/components/TutorialModal';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,6 +38,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <NextIntlClientProvider>
             <div className="flex justify-end gap-2 p-4">
+              <TutorialModal />
               <LocaleSwitcher />
               <ThemeToggle />
             </div>
