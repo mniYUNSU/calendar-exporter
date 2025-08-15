@@ -26,7 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const t = await getTranslations('Home');
 
-  const title = t('title');
+  const title = `${t('title')} - ${t('mainTitle')}`;
   const description = t('description');
   const keywords = t('keywords')
     .split(',')
@@ -47,7 +47,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       locale,
-      siteName: 'Calendar Exporter',
+      siteName: title,
       type: 'website',
       alternateLocale: locales.filter((l) => l !== locale)
     },
@@ -68,10 +68,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <ThemeProvider>
           <NextIntlClientProvider>
-            <div className="flex justify-end gap-2 p-4">
+            <div className='flex justify-end gap-2 p-4'>
               <TutorialModal />
               <LocaleSwitcher />
               <ThemeToggle />
