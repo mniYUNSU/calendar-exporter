@@ -55,7 +55,9 @@ export default function EventForm({
     <div className='card bg-gradient-to-br from-background to-primary/10 p-6 sm:p-8 space-y-6 animate-fade-in w-full md:w-1/2'>
       <div className='flex justify-end'>
         <label className='flex items-center cursor-pointer text-sm'>
-          <span className={`mr-2 ${manualMode ? 'opacity-60' : ''}`}>{t('picker')}</span>
+          <span className={`mr-2 ${manualMode ? 'opacity-60' : ''}`}>
+            {t('picker')}
+          </span>
           <div className='relative'>
             <input
               type='checkbox'
@@ -66,7 +68,9 @@ export default function EventForm({
             <div className='w-10 h-5 bg-primary/20 rounded-full peer-checked:bg-primary transition-colors'></div>
             <div className='absolute top-0.5 left-0.5 w-4 h-4 bg-background rounded-full transition-transform peer-checked:translate-x-5'></div>
           </div>
-          <span className={`ml-2 ${manualMode ? '' : 'opacity-60'}`}>{t('manual')}</span>
+          <span className={`ml-2 ${manualMode ? '' : 'opacity-60'}`}>
+            {t('manual')}
+          </span>
         </label>
       </div>
       <div className='space-y-4'>

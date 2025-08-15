@@ -44,8 +44,10 @@ export default function HomePage() {
           />
         </div>
 
+        <DownloadButton events={events} />
+
         {events.length > 0 && (
-          <div className='fixed bottom-4 left-0 right-0 flex justify-center md:hidden'>
+          <div className='sticky bottom-4 left-0 right-0 flex justify-center md:hidden'>
             <div className='relative w-full max-w-md'>
               <div
                 className={`absolute bottom-full mb-2 w-full transition-all duration-300 ${
@@ -69,8 +71,6 @@ export default function HomePage() {
             </div>
           </div>
         )}
-
-        <DownloadButton events={events} />
 
         <Footer />
       </div>
