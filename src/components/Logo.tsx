@@ -15,7 +15,10 @@ interface LogoProps {
   direction?: 'horizontal' | 'vertical';
 }
 
-export default function Logo({ size = 40, direction = 'horizontal' }: LogoProps) {
+export default function Logo({
+  size = 40,
+  direction = 'horizontal'
+}: LogoProps) {
   const t = useTranslations('Home');
   const title = t('title');
 
@@ -24,14 +27,14 @@ export default function Logo({ size = 40, direction = 'horizontal' }: LogoProps)
   return (
     <div className={`flex ${flexDirection} items-center gap-2`}>
       <Image
-        src="/logo_sukegene.png"
+        src='/logo_sukegene.png'
         alt={title}
         width={size}
         height={size}
         priority
       />
       <span
-        className="font-bold text-foreground"
+        className='text-foreground font-bold'
         style={{ fontSize: size * 0.5 }}
       >
         {title}
@@ -39,4 +42,3 @@ export default function Logo({ size = 40, direction = 'horizontal' }: LogoProps)
     </div>
   );
 }
-

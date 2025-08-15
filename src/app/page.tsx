@@ -22,17 +22,19 @@ export default function HomePage() {
   };
 
   return (
-    <main className='min-h-screen bg-gradient-to-br from-background to-primary/10 text-foreground px-4 py-10 transition-colors flex items-center justify-center'>
+    <main className='p-4 bg-gradient-to-br from-background to-primary/10 text-foreground transition-colors flex items-center justify-center'>
       <div className='w-full max-w-4xl space-y-8 animate-fade-in'>
         <div className='text-center space-y-2'>
-          <h1 className='text-3xl md:text-5xl font-bold'>{`📅 ${t('title')}`}</h1>
+          <h1 className='text-3xl md:text-5xl font-bold'>{`📅 ${t(
+            'title'
+          )}`}</h1>
           <p className='text-sm md:text-base opacity-80'>
             Create a calendar file (.ics) for your events. Supports English,
             日本語 & 한국어.
           </p>
         </div>
 
-        <div className='flex flex-col md:flex-row gap-8 md:items-start'>
+        <div className='flex flex-col justify-center md:flex-row gap-8 md:items-start'>
           <EventForm onAdd={handleAdd} />
           <EventList
             events={events}
@@ -48,7 +50,7 @@ export default function HomePage() {
                 className={`absolute bottom-full mb-2 w-full transition-all duration-300 ${
                   showEvents
                     ? 'translate-y-0 opacity-100'
-                    : 'translate-y-full opacity-0 pointer-events-none'
+                    : 'translate-y-1/7 opacity-0 pointer-events-none'
                 }`}
               >
                 <EventList
@@ -59,7 +61,7 @@ export default function HomePage() {
               </div>
               <button
                 onClick={() => setShowEvents((s) => !s)}
-                className='card px-4 py-2 text-sm shadow-md w-full'
+                className='card px-4 py-2 text-sm shadow w-full'
               >
                 {formT('events')} ({events.length})
               </button>
@@ -76,4 +78,3 @@ export default function HomePage() {
     </main>
   );
 }
-

@@ -20,7 +20,7 @@ export default function DownloadButton({ events }: Props) {
       <button
         onClick={handleDownload}
         disabled={events.length === 0}
-        className='btn rounded-full px-6 py-3 text-sm md:text-base shadow-md hover:shadow-lg transition disabled:opacity-50'
+        className='btn rounded-full px-6 py-3 text-sm md:text-base shadow hover:shadow-lg transition disabled:opacity-50'
       >
         Download Calendar
       </button>

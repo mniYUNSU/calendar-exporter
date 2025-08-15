@@ -16,7 +16,10 @@ export default function TutorialModal() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const seen = typeof window !== 'undefined' ? localStorage.getItem('tutorialSeen') : 'true';
+    const seen =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('tutorialSeen')
+        : 'true';
     if (!seen) {
       setOpen(true);
     }
@@ -42,43 +45,43 @@ export default function TutorialModal() {
           setIndex(0);
           setOpen(true);
         }}
-        className="p-2 border rounded-full text-sm hover:bg-primary/10 transition"
+        className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
       >
         ?
       </button>
       {open && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded shadow-lg max-w-sm w-full text-center">
-            <div className="overflow-hidden mb-4">
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+          <div className='bg-white dark:bg-gray-800 p-4 rounded shadow-lg max-w-sm w-full text-center shadow-primary/10'>
+            <div className='overflow-hidden mb-4'>
               <div
-                className="flex transition-transform duration-500"
+                className='flex transition-transform duration-500'
                 style={{ transform: `translateX(-${index * 100}%)` }}
               >
                 {slides.map((slide, i) => (
-                  <div key={i} className="w-full flex-shrink-0">
+                  <div key={i} className='w-full flex-shrink-0'>
                     <Image
                       src={slide.src}
                       alt={slide.text}
                       width={80}
                       height={80}
-                      className="mx-auto mb-2"
+                      className='mx-auto mb-2'
                     />
                     <p>{slide.text}</p>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">
+            <div className='flex justify-between items-center'>
+              <span className='text-sm'>
                 {index + 1} / {slides.length}
               </span>
-              <button onClick={next} className="px-2 py-1 border rounded">
+              <button onClick={next} className='px-2 py-1 border rounded'>
                 {t('next')}
               </button>
             </div>
             <button
               onClick={close}
-              className="mt-4 px-3 py-1 border rounded w-full"
+              className='mt-4 px-3 py-1 border rounded w-full'
             >
               {t('close')}
             </button>
@@ -88,4 +91,3 @@ export default function TutorialModal() {
     </>
   );
 }
-
