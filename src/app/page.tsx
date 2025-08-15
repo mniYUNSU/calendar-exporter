@@ -3,6 +3,7 @@
 import EventForm from '@/components/EventForm';
 import DownloadButton from '@/components/DownloadButton';
 import EventList from '@/components/EventList';
+import Footer from '@/components/Footer';
 import { useState } from 'react';
 import { CalendarEvent } from '@/lib/icsGenerator';
 import { useTranslations } from 'next-intl';
@@ -71,9 +72,7 @@ export default function HomePage() {
 
         <DownloadButton events={events} />
 
-        <footer className='pt-6 text-xs opacity-60 text-center'>
-          Made by Yunsu Bae - 다국어 지원 테스트 중
-        </footer>
+        <Footer />
       </div>
     </main>
   );

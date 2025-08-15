@@ -5,11 +5,8 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeProvider from '@/components/ThemeProvider';
-import ThemeToggle from '@/components/ThemeToggle';
-import TutorialModal from '@/components/TutorialModal';
-import Logo from '@/components/Logo';
+import NavigationBar from '@/components/NavigationBar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -74,14 +71,7 @@ export default async function RootLayout({
       >
         <ThemeProvider>
           <NextIntlClientProvider>
-            <div className='flex justify-between gap-2 p-4 sticky top-0 z-10 backdrop-blur bg-gradient-to-br from-background to-primary/5'>
-              <Logo />
-              <div className='flex justify-end gap-2'>
-                <TutorialModal />
-                <LocaleSwitcher />
-                <ThemeToggle />
-              </div>
-            </div>
+            <NavigationBar />
             {children}
           </NextIntlClientProvider>
         </ThemeProvider>
