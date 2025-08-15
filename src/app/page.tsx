@@ -9,7 +9,9 @@ import { useTranslations } from 'next-intl';
 
 export default function HomePage() {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
+  const [showEvents, setShowEvents] = useState(false);
   const t = useTranslations('Home');
+  const formT = useTranslations('EventForm');
 
   const handleAdd = (event: CalendarEvent) => {
     setEvents((prev) => [...prev, event]);
@@ -32,8 +34,38 @@ export default function HomePage() {
 
         <div className='flex flex-col md:flex-row gap-8 md:items-start'>
           <EventForm onAdd={handleAdd} />
-          <EventList events={events} onRemove={handleRemove} />
+          <EventList
+            events={events}
+            onRemove={handleRemove}
+            className='hidden md:block'
+          />
         </div>
+
+        {events.length > 0 && (
+          <div className='fixed bottom-4 left-0 right-0 flex justify-center md:hidden'>
+            <div className='relative w-full max-w-md'>
+              <div
+                className={`absolute bottom-full mb-2 w-full transition-all duration-300 ${
+                  showEvents
+                    ? 'translate-y-0 opacity-100'
+                    : 'translate-y-full opacity-0 pointer-events-none'
+                }`}
+              >
+                <EventList
+                  events={events}
+                  onRemove={handleRemove}
+                  listClassName='max-h-60 overflow-y-auto'
+                />
+              </div>
+              <button
+                onClick={() => setShowEvents((s) => !s)}
+                className='card px-4 py-2 text-sm shadow-md w-full'
+              >
+                {formT('events')} ({events.length})
+              </button>
+            </div>
+          </div>
+        )}
 
         <DownloadButton events={events} />
 

@@ -6,9 +6,16 @@ import { useTranslations } from 'next-intl';
 interface EventListProps {
   events: CalendarEvent[];
   onRemove: (id: string) => void;
+  className?: string;
+  listClassName?: string;
 }
 
-export default function EventList({ events, onRemove }: EventListProps) {
+export default function EventList({
+  events,
+  onRemove,
+  className = '',
+  listClassName = ''
+}: EventListProps) {
   const t = useTranslations('EventForm');
   const formatDateTime = (value: string) =>
     new Date(value).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' });
@@ -16,9 +23,9 @@ export default function EventList({ events, onRemove }: EventListProps) {
   if (events.length === 0) return null;
 
   return (
-    <div className='card p-6 sm:p-8 space-y-4 w-full md:w-1/2 animate-fade-in'>
+    <div className={`card p-6 sm:p-8 space-y-4 w-full md:w-1/2 animate-fade-in ${className}`}>
       <h2 className='text-lg font-semibold'>{t('events')} ({events.length})</h2>
-      <ul className='space-y-2 text-left'>
+      <ul className={`space-y-2 text-left ${listClassName}`}>
         {events.map((event) => (
           <li
             key={event.id}
