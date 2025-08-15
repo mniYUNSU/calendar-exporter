@@ -24,5 +24,12 @@
     "manual": "Manual Input",
     "picker": "Date Picker",
     "events": "Events"
+  },
+  "Tutorial": {
+    "slide1": "Calendar Exporter lets you create events and export them as an .ics file.",
+    "slide2": "Enter the date and click the Add button.",
+    "slide3": "Click the Download button to add all events to your calendar at once!",
+    "next": "Next",
+    "close": "Close"
   }
 }
