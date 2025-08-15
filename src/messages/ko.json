@@ -2,6 +2,7 @@
   "Home": {
     "title": "일정 생성기",
     "description": "여러 개의 일정을 하나의 캘린더 파일로 만들어보세요.",
+    "keywords": "캘린더, 일정 생성기, ics, 이벤트 내보내기",
     "addEvent": "일정 추가",
     "delete": "삭제",
     "download": "캘린더 다운로드",
