@@ -25,6 +25,13 @@ export default function TutorialModal() {
     }
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
   const close = () => {
     localStorage.setItem('tutorialSeen', 'true');
     setOpen(false);
@@ -50,7 +57,7 @@ export default function TutorialModal() {
         ?
       </button>
       {open && (
-        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
           <div className='bg-white dark:bg-gray-800 p-4 rounded shadow-lg max-w-sm w-full text-center shadow-primary/10'>
             <div className='overflow-hidden mb-4'>
               <div

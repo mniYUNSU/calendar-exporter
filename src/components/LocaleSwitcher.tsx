@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const locales = [
   { value: 'ko', label: '한국어' },
@@ -14,6 +14,18 @@ export default function LocaleSwitcher() {
   const currentLocale = useLocale();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
 
   const handleSelect = (newLocale: string) => {
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/`;
@@ -24,7 +36,7 @@ export default function LocaleSwitcher() {
   const currentLabel = locales.find((l) => l.value === currentLocale)?.label;
 
   return (
-    <div className='relative'>
+    <div className='relative' ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
         className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
