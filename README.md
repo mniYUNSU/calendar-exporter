@@ -1,4 +1,4 @@
-![sukegene_logo](./public/logo_sukegene.png)
+<img src="./public/logo_sukegene.png" width="300">
 
 # My Calendar Exporter - SukeGene(스케제네)
 
