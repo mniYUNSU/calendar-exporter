@@ -22,8 +22,8 @@ export default function DateTimeInput({
   const dateLocale = locale === 'ko' ? ko : locale === 'ja' ? ja : enUS;
 
   return (
-    <div className='flex flex-col gap-4'>
-      <div>
+    <div className='flex flex-row gap-4 justify-between'>
+      <div className='flex flex-col'>
         <label className='text-sm font-medium mb-1'>{labels.start}</label>
         <DatePicker
           onKeyDown={(e) => {
@@ -38,10 +38,10 @@ export default function DateTimeInput({
           dateFormat='Pp'
           placeholderText={labels.start}
           locale={dateLocale}
-          className='input'
+          className='input text-center'
         />
       </div>
-      <div>
+      <div className='flex flex-col'>
         <label className='text-sm font-medium mb-1'>{labels.end}</label>
         <DatePicker
           selected={end}
@@ -52,7 +52,7 @@ export default function DateTimeInput({
           dateFormat='Pp'
           placeholderText={labels.end}
           locale={dateLocale}
-          className='input'
+          className='input text-center'
         />
       </div>
     </div>

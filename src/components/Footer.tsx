@@ -12,11 +12,7 @@ export default function Footer() {
         >
           <Image src='/github.svg' alt='GitHub' width={20} height={20} />
         </a>
-        <a
-          href='/'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
+        <a href='/' target='_blank' rel='noopener noreferrer'>
           <Image src='/globe.svg' alt='Website' width={20} height={20} />
         </a>
       </div>
