@@ -1,8 +1,6 @@
-import { CalendarEvent } from './icsGenerator';
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
 
-export function removeCalendarEvent(
-  events: CalendarEvent[],
-  id: string
-): CalendarEvent[] {
-  return events.filter((event) => event.id !== id);
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

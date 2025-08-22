@@ -27,7 +27,7 @@ export default function EventList({
 
   return (
     <div
-      className={`card bg-gradient-to-br from-background to-primary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className}`}
+      className={`card bg-gradient-to-br from-ggbackground to-ggprimary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className} text-ggforeground`}
     >
       <h2 className='text-md font-semibold pb-2'>
         {t('events')} ({events.length})
@@ -44,11 +44,15 @@ export default function EventList({
                 <div className='flex flex-row justify-between w-full'>
                   <div className='flex flex-col text-sm '>
                     <p className='font-semibold'>{t('start')}</p>
-                    <p className=''>{formatDateTime(event.start)}</p>
+                    <p className='text-foreground'>
+                      {formatDateTime(event.start)}
+                    </p>
                   </div>
                   <div className='flex flex-col text-sm '>
                     <p className='font-semibold'>{t('end')}</p>
-                    <p className=''>{formatDateTime(event.end)}</p>
+                    <p className='text-foreground'>
+                      {formatDateTime(event.end)}
+                    </p>
                   </div>
                 </div>
                 {event.location && (
@@ -62,13 +66,13 @@ export default function EventList({
                     <p className='font-semibold min-w-fit'>
                       {t('description')}
                     </p>
-                    <p className=''>{event.description}</p>
+                    <p className='text-foreground'>{event.description}</p>
                   </div>
                 )}
                 {event.phone && (
                   <div className='text-sm flex flex-row gap-2 items-start'>
                     <p className='font-semibold min-w-fit'>{t('phone')}</p>
-                    <p className=''>{event.phone}</p>
+                    <p className='text-foreground'>{event.phone}</p>
                   </div>
                 )}
                 {event.url && (
@@ -82,7 +86,7 @@ export default function EventList({
               </div>
               <button
                 onClick={() => onRemove(event.id)}
-                className='text-sm text-red-500 hover:text-red-700 transition min-w-fit p-2'
+                className='text-sm text-ggsecondary hover:text-error transition min-w-fit p-2 font-bold'
               >
                 {t('delete')}
               </button>

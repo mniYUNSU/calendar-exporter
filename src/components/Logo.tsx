@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { AnimatedGradientText } from './magicui/AnimatedGradientText';
 
 interface LogoProps {
   /**
@@ -33,12 +34,14 @@ export default function Logo({
         height={size}
         priority
       />
-      <span
-        className='text-foreground font-bold'
-        style={{ fontSize: size * 0.5 }}
+
+      <AnimatedGradientText
+        colorFrom='#42ace5'
+        colorTo='#871ef7'
+        className='font-bold tracking-tight text-[20px]'
       >
         {title}
-      </span>
+      </AnimatedGradientText>
     </div>
   );
 }

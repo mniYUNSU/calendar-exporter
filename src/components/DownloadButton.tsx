@@ -2,12 +2,15 @@
 
 import { saveAs } from 'file-saver';
 import { CalendarEvent, generateICSContent } from '@/lib/icsGenerator';
+import { useTranslations } from 'next-intl';
+import { RippleButton } from './magicui/RippleButton';
 
 type Props = {
   events: CalendarEvent[];
 };
 
 export default function DownloadButton({ events }: Props) {
+  const t = useTranslations('Home');
   const handleDownload = () => {
     const blob = new Blob([generateICSContent(events)], {
       type: 'text/calendar;charset=utf-8'
@@ -17,13 +20,14 @@ export default function DownloadButton({ events }: Props) {
 
   return (
     <div className='text-center mt-6'>
-      <button
+      <RippleButton
         onClick={handleDownload}
         disabled={events.length === 0}
-        className='btn rounded-full px-6 py-3 text-sm md:text-base shadow hover:shadow-lg transition disabled:opacity-50'
+        className='rounded-full px-6 py-3 text-sm md:text-base shadow hover:shadow-lg transition disabled:opacity-60 bg-ggprimary text-ggbackground border-none m-auto font-semibold'
+        rippleColor='#4f46e5'
       >
-        Download Calendar
-      </button>
+        {t('download')}
+      </RippleButton>
     </div>
   );
 }

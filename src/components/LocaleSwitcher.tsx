@@ -5,9 +5,9 @@ import { useLocale } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
 
 const locales = [
-  { value: 'ko', label: '한국어' },
-  { value: 'en', label: 'English' },
-  { value: 'ja', label: '日本語' }
+  { value: 'ko', label: '🇰🇷 한국어' },
+  { value: 'en', label: '🇺🇸 English' },
+  { value: 'ja', label: '🇯🇵 日本語' }
 ];
 
 export default function LocaleSwitcher() {
@@ -36,20 +36,20 @@ export default function LocaleSwitcher() {
   const currentLabel = locales.find((l) => l.value === currentLocale)?.label;
 
   return (
-    <div className='relative' ref={ref}>
+    <div className='p-2 flex relative justify-center items-center' ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
+        className='rounded-full text-xl hover:bg-ggprimary/10 transition'
       >
-        {currentLabel}
+        {currentLabel?.split(' ')[0]}
       </button>
       {open && (
-        <div className='absolute right-0 mt-2 w-32 bg-background border rounded-lg shadow'>
+        <div className='absolute right-0 top-8 w-30 bg-ggbackground border rounded-lg shadow'>
           {locales.map((locale) => (
             <button
               key={locale.value}
               onClick={() => handleSelect(locale.value)}
-              className='block w-full text-left px-4 py-2 text-sm hover:bg-primary/10'
+              className='block w-full text-left px-4 py-2 text-md hover:bg-ggprimary/10'
             >
               {locale.label}
             </button>

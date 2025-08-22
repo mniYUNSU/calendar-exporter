@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
 import { useTranslations } from 'next-intl';
-import Image from 'next/image';
+import { CalendarSearch, Keyboard } from 'lucide-react';
+import { RippleButton } from './magicui/RippleButton';
 
 export default function EventForm({
   onAdd
@@ -53,17 +54,12 @@ export default function EventForm({
   };
 
   return (
-    <div className='card bg-gradient-to-br from-background to-primary/10 p-4 sm:p-6 space-y-6 animate-fade-in w-full md:w-1/2'>
+    <div className='card bg-gradient-to-br from-ggbackground to-ggprimary/10 p-4 sm:p-6 space-y-6 animate-fade-in w-full md:w-1/2'>
       <div className='space-y-4'>
         <div className=''>
-          <div className=' flex justify-end -top-0 right-0'>
+          <div className='flex justify-end -top-0 right-0'>
             <label className='justify-center flex items-center cursor-pointer text-sm gap-1'>
-              <Image
-                src='/calendar-new.svg'
-                alt='calendar-new'
-                width={20}
-                height={20}
-              />
+              <CalendarSearch width={20} height={20} />
               <div className='relative'>
                 <input
                   type='checkbox'
@@ -71,15 +67,10 @@ export default function EventForm({
                   onChange={() => setManualMode((m) => !m)}
                   className='sr-only peer'
                 />
-                <div className='w-10 h-5 bg-primary rounded-full peer-checked:bg-primary transition-colors'></div>
-                <div className='absolute top-0.5 left-0.5 w-4 h-4 bg-background rounded-full transition-transform peer-checked:translate-x-5'></div>
+                <div className='w-10 h-5 bg-ggprimary rounded-full peer-checked:bg-ggprimary transition-colors'></div>
+                <div className='absolute top-0.5 left-0.5 w-4 h-4 bg-ggbackground rounded-full transition-transform peer-checked:translate-x-5'></div>
               </div>
-              <Image
-                src='/keyboard-show.svg'
-                alt='keyboard-show'
-                width={20}
-                height={20}
-              />
+              <Keyboard width={20} height={20} />
             </label>
           </div>
           {manualMode ? (
@@ -105,7 +96,7 @@ export default function EventForm({
             />
           )}
         </div>
-        <div className='flex flex-col w-full max-w-sm'>
+        <div className='flex flex-col w-full max-w-sm text-ggforeground'>
           <label className='text-sm font-medium mb-1'>{t('title')}</label>
           <input
             className='input'
@@ -153,9 +144,13 @@ export default function EventForm({
           </div>
         </div>
       </div>
-      <button onClick={handleSubmit} className='btn w-full'>
+      <RippleButton
+        onClick={handleSubmit}
+        className='w-full border-none bg-ggprimary text-ggbackground font-semibold'
+        rippleColor='#4f46e5'
+      >
         {t('add')}
-      </button>
+      </RippleButton>
     </div>
   );
 }

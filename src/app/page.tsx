@@ -11,14 +11,12 @@ import DownloadButton from '@/components/DownloadButton';
 import EventList from '@/components/EventList';
 import Footer from '@/components/Footer';
 import ClickSpark from '@/components/ClickSpark';
-import Logo from '@/components/Logo';
 
 export default function HomePage() {
   const { theme } = useTheme();
 
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [showEvents, setShowEvents] = useState(false);
-  const t = useTranslations('Home');
   const formT = useTranslations('EventForm');
 
   const handleAdd = (event: CalendarEvent) => {
@@ -37,7 +35,7 @@ export default function HomePage() {
       sparkCount={8}
       duration={400}
     >
-      <main className='min-h-screen p-4 bg-gradient-to-br from-background to-primary/10 text-foreground transition-colors flex items-center justify-center'>
+      <main className='min-h-screen p-4 bg-gradient-to-br from-ggbackground/70 to-ggprimary/10 text-ggforeground transition-colors flex items-center justify-center'>
         <div className='w-full max-w-4xl space-y-8 animate-fade-in'>
           <div className='flex flex-col justify-center md:flex-row gap-8 md:items-start'>
             <EventForm onAdd={handleAdd} />
@@ -47,10 +45,12 @@ export default function HomePage() {
               className='hidden md:block'
             />
           </div>
+
           <DownloadButton events={events} />
+          <Footer />
 
           {events.length > 0 && (
-            <div className='fixed bottom-4 z-40 left-0 right-0 flex justify-center md:hidden'>
+            <div className='absolute sticky bottom-5 z-40 left-0 right-0 flex justify-center md:hidden'>
               <div className='relative w-full max-w-md'>
                 <div
                   className={`absolute bottom-full mb-2 w-full transition-all duration-300 ${
@@ -74,17 +74,6 @@ export default function HomePage() {
               </div>
             </div>
           )}
-
-          <div className='flex flex-col items-center justify-center pt-6'>
-            <p className='text-sm md:text-base opacity-80'>{t('mainTitle')}</p>
-            <p className='text-sm md:text-base opacity-80'>
-              {t('description')}
-            </p>
-            <div className='p-2'>
-              <Logo />
-            </div>
-          </div>
-          <Footer />
         </div>
       </main>
     </ClickSpark>

@@ -103,7 +103,7 @@ export default function KeyboardDateTimeInput({
   }, [year, month, day, hour, minute, onChange]);
 
   return (
-    <div className='flex flex-col relative'>
+    <div className='flex flex-col relative text-ggforeground'>
       <label className='text-sm font-medium mb-1'>{label}</label>
       <div className='flex flex-row items-center justify-center py-2'>
         <input

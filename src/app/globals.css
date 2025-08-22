@@ -1,32 +1,108 @@
 @import 'tailwindcss';
-/* @tailwind base; */
-/* @tailwind components; */
-/* @tailwind utilities; */
+@import 'tw-animate-css';
 
 :root {
   --background: #f4f0ff;
   --foreground: #171717;
   --primary: #4f46e5;
+  --highlight: #100932;
+  --highlightBlur: #10093296;
+
+  --secondary: #7c3aed; /* 보라색보다 조금 화사한 보조 컬러 */
+  --muted: #e4e1f7; /* 카드/서브 배경 */
+  --border: #d4d0eb; /* 구분선, input border */
+  --success: #16a34a; /* 성공/확인 */
+  --warning: #facc15; /* 경고 */
+  --error: #dc2626; /* 에러 */
+
+  --ggbackground: #f8f6f0; /* 크림빛 아이보리 */
+  --ggforeground: #1a1a1a; /* 클래식 블랙 */
+  --ggprimary: #5b21b6; /* 딥 퍼플 */
+  --ggsecondary: #b91c1c; /* 와인 레드 */
+  --gghighlight: #b45309; /* 브론즈/골드 */
+  --gghighlightBlur: #b4530996;
+  --ggaccent: #065f46; /* 에메랄드 그린 */
+  --ggmuted: #e9dfd1; /* 앤티크 베이지 */
+  --ggborder: #d6cfc2; /* 은은한 골드 톤 */
 }
 
 .dark {
   --background: #060015;
   --foreground: #ededed;
   --primary: #4f46e5;
+  --highlight: #d1cef8;
+  --highlightBlur: #d1cef88f;
+
+  --secondary: #818cf8; /* primary의 밝은 변주 */
+  --muted: #1c1733; /* 카드/서브 배경 */
+  --border: #2e2a44; /* 경계선 */
+  --success: #22c55e; /* 성공/확인 */
+  --warning: #eab308; /* 경고 */
+  --error: #ef4444; /* 에러 */
+
+  --ggbackground: #0e0a17; /* 미드나잇 퍼플 */
+  --ggforeground: #f3f0eb; /* 아이보리 화이트 */
+  --ggprimary: #a78bfa; /* 라벤더 퍼플 */
+  --ggsecondary: #f87171; /* 로즈 레드 */
+  --gghighlight: #facc15; /* 고혹적인 골드 */
+  --gghighlightBlur: #facc158f;
+  --ggaccent: #34d399; /* 에메랄드 */
+  --ggmuted: #1e1a29; /* 버건디 블랙 */
+  --ggborder: #3b2f4a; /* 다크 브론즈 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-highlight: var(--highlight);
+  --color-highlightBlur: var(--highlightBlur);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-ggbackground: var(--ggbackground);
+  --color-ggforeground: var(--ggforeground);
+  --color-ggprimary: var(--ggprimary);
+  --color-gghighlight: var(--gghighlight);
+  --color-gghighlightBlur: var(--gghighlightBlur);
+  --color-ggsecondary: var(--ggsecondary);
+  --color-ggmuted: var(--ggmuted);
+  --color-ggborder: var(--ggborder);
+  --color-ggaccent: var(--ggaccent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-rippling: rippling 600ms ease-out;
+
+  @keyframes gradient {
+    to {
+      background-position: var(--bg-size, 300%) 0;
+    }
+  }
+
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+  cursor: pointer;
 }
 
 @keyframes fade-in {
@@ -44,22 +120,41 @@ body {
   animation: fade-in 0.4s ease both;
 }
 
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}
+
+.animate-shine {
+  animation: shine 5s linear infinite;
+}
+
 .input {
-  @apply border border-primary/20 rounded-lg px-3 py-2 w-full text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition bg-gradient-to-bl from-background to-primary/5;
+  @apply border border-ggprimary/20 rounded-lg px-3 py-2 w-full text-sm bg-background text-ggforeground focus:outline-none focus:ring-2 focus:ring-ggprimary/50 transition bg-gradient-to-bl from-background to-ggprimary/5;
 }
 
 .input-manualDate {
-  @apply border-b-2 text-center border-primary/20 px-0 py-0 w-full text-sm  text-foreground focus:outline-none bg-transparent;
+  @apply border-b-2 text-center border-ggprimary/20 px-0 py-0 w-full text-sm  text-ggforeground focus:outline-none bg-transparent;
 }
 
 .btn {
-  @apply bg-primary hover:bg-primary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors;
+  @apply bg-ggprimary hover:bg-ggprimary/90 text-white font-semibold py-2 px-4 rounded-lg transition-colors;
 }
 
 .card {
-  @apply bg-background/80 backdrop-blur border border-primary/20 rounded-2xl shadow-lg shadow-primary/10;
+  @apply bg-ggbackground/80 backdrop-blur border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10;
 }
 
 .shadow {
-  @apply shadow-md shadow-primary/10;
+  @apply shadow-md shadow-ggprimary/10;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
