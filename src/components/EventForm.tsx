@@ -54,7 +54,7 @@ export default function EventForm({
   };
 
   return (
-    <div className='card bg-gradient-to-br from-ggbackground to-ggprimary/10 p-4 sm:p-6 space-y-6 animate-fade-in w-full md:w-1/2'>
+    <div className='backdrop-blur-xs border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10 bg-gradient-to-br from-ggbackground/30 to-ggprimary/10 p-4 sm:p-6 space-y-6 animate-fade-in w-full md:w-1/2'>
       <div className='space-y-4'>
         <div className=''>
           <div className='flex justify-end -top-0 right-0'>

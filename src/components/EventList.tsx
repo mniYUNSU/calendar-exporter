@@ -1,6 +1,7 @@
 'use client';
 
 import { CalendarEvent } from '@/lib/icsGenerator';
+import { Phone, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 interface EventListProps {
@@ -27,7 +28,7 @@ export default function EventList({
 
   return (
     <div
-      className={`card bg-gradient-to-br from-ggbackground to-ggprimary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className} text-ggforeground`}
+      className={`backdrop-blur-sm border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10 bg-gradient-to-br from-ggbackground/30 to-ggprimary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className} text-ggforeground`}
     >
       <h2 className='text-md font-semibold pb-2'>
         {t('events')} ({events.length})
@@ -38,7 +39,7 @@ export default function EventList({
             key={event.id}
             className='bg-gradient-to-bl from-background to-primary/5 bg-background/80 backdrop-blur border border-primary/20 rounded-2xl p-4 shadow-sm transition hover:shadow-md shadow-primary/10'
           >
-            <div className='flex justify-between gap-2'>
+            <div className='flex justify-between items-center gap-2'>
               <div className='w-full space-y-1 break-all'>
                 <div className='font-semibold'>{event.title}</div>
                 <div className='flex flex-row justify-between w-full'>
@@ -86,9 +87,9 @@ export default function EventList({
               </div>
               <button
                 onClick={() => onRemove(event.id)}
-                className='text-sm text-ggsecondary hover:text-error transition min-w-fit p-2 font-bold'
+                className='text-sm text-ggsecondary hover:text-error rounded-full p-2 font-bold hover:bg-ggprimary/10 transition'
               >
-                {t('delete')}
+                <Trash2 width={20} height={20} />
               </button>
             </div>
           </li>

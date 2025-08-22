@@ -36,10 +36,10 @@ export default function LocaleSwitcher() {
   const currentLabel = locales.find((l) => l.value === currentLocale)?.label;
 
   return (
-    <div className='p-2 flex relative justify-center items-center' ref={ref}>
+    <div className='rounded-full relative w-full' ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className='rounded-full text-xl hover:bg-ggprimary/10 transition'
+        className='rounded-full px-2 py-1 text-xl hover:bg-ggprimary/10 transition'
       >
         {currentLabel?.split(' ')[0]}
       </button>
@@ -49,7 +49,7 @@ export default function LocaleSwitcher() {
             <button
               key={locale.value}
               onClick={() => handleSelect(locale.value)}
-              className='block w-full text-left px-4 py-2 text-md hover:bg-ggprimary/10'
+              className='block w-full border-b border-ggborder text-left px-4 py-2 text-md hover:bg-ggprimary/10'
             >
               {locale.label}
             </button>

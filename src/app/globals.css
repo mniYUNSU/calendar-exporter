@@ -146,7 +146,7 @@ button {
 }
 
 .card {
-  @apply bg-ggbackground/80 backdrop-blur border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10;
+  @apply bg-ggbackground/30 backdrop-blur border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10;
 }
 
 .shadow {

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { BookOpenText } from 'lucide-react';
 
 export default function TutorialModal() {
   const t = useTranslations('Tutorial');
@@ -53,9 +54,9 @@ export default function TutorialModal() {
           setIndex(0);
           setOpen(true);
         }}
-        className='p-2 border rounded-full text-sm hover:bg-primary/10 transition'
+        className='p-2 rounded-full text-sm hover:bg-primary/10 transition'
       >
-        ?
+        <BookOpenText width={20} height={20} />
       </button>
       {open &&
         createPortal(
