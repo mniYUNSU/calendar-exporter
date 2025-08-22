@@ -1,13 +1,19 @@
 'use client';
 
 import { CalendarEvent } from '@/lib/icsGenerator';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
 import { useTranslations } from 'next-intl';
 import { CalendarSearch, Keyboard } from 'lucide-react';
 import { RippleButton } from './magicui/RippleButton';
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 export default function EventForm({
   onAdd
@@ -27,10 +33,38 @@ export default function EventForm({
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
+  const locationInputRef = useRef<HTMLInputElement>(null);
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
+
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey || !locationInputRef.current) return;
+
+    function initAutocomplete() {
+      if (!locationInputRef.current || !window.google?.maps) return;
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        locationInputRef.current,
+        { fields: ['formatted_address'] }
+      );
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        setLocation(place.formatted_address || locationInputRef.current?.value || '');
+      });
+    }
+
+    if (!window.google?.maps) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.async = true;
+      script.onload = initAutocomplete;
+      document.head.appendChild(script);
+    } else {
+      initAutocomplete();
+    }
+  }, []);
 
   const handleSubmit = () => {
     if (!title || !start || !end) return;
@@ -111,6 +145,7 @@ export default function EventForm({
             className='input'
             placeholder={t('locationPlaceholder')}
             value={location}
+            ref={locationInputRef}
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
