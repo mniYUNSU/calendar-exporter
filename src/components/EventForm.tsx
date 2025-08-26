@@ -43,12 +43,12 @@ export default function EventForm({
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey || !locationInputRef.current) return;
 
-    function initAutocomplete() {
-      if (!locationInputRef.current || !window.google?.maps) return;
-      const autocomplete = new window.google.maps.places.Autocomplete(
-        locationInputRef.current,
-        { fields: ['formatted_address'] }
-      );
+    async function initAutocomplete() {
+      if (!locationInputRef.current || !window.google?.maps?.importLibrary) return;
+      const { Autocomplete } = (await window.google.maps.importLibrary('places')) as any;
+      const autocomplete = new Autocomplete(locationInputRef.current, {
+        fields: ['formatted_address']
+      });
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
         setLocation(place.formatted_address || locationInputRef.current?.value || '');
@@ -57,7 +57,7 @@ export default function EventForm({
 
     if (!window.google?.maps) {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
       script.async = true;
       script.onload = initAutocomplete;
       document.head.appendChild(script);
