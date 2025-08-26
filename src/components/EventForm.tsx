@@ -1,13 +1,14 @@
 'use client';
 
 import { CalendarEvent } from '@/lib/icsGenerator';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
 import { useTranslations } from 'next-intl';
 import { CalendarSearch, Keyboard } from 'lucide-react';
 import { RippleButton } from './magicui/RippleButton';
+import { Skeleton } from './ui/skeleton';
 
 declare global {
   interface Window {
@@ -42,26 +43,36 @@ export default function EventForm({
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
+  const [isPlaceLoaded, setIsPlaceLoaded] = useState(false);
 
-  useEffect(() => {
+  async function init() {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey) return;
 
-    async function init() {
-      if (!window.google?.maps) {
-        await new Promise((resolve) => {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
-          script.async = true;
-          script.onload = resolve;
-          document.head.appendChild(script);
-        });
-      }
+    if (!window.google?.maps) {
+      await new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places&loading=async`;
+        script.async = true;
+        script.onload = resolve;
+        document.head.appendChild(script);
+      });
+    } else {
       await window.google.maps.importLibrary('places');
-      placesLoaded.current = true;
     }
+    placesLoaded.current = true;
+  }
 
-    init();
+  const initPlaceLoaded = useCallback(async () => {
+    setIsPlaceLoaded(false);
+    await init();
+    setTimeout(() => {
+      setIsPlaceLoaded(true);
+    }, 200);
+  }, []);
+
+  useEffect(() => {
+    initPlaceLoaded();
   }, []);
 
   const handleLocationChange = async (
@@ -135,7 +146,8 @@ export default function EventForm({
   return (
     <div className='backdrop-blur-xs border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10 bg-gradient-to-br from-ggbackground/30 to-ggprimary/10 p-4 sm:p-6 space-y-6 animate-fade-in w-full md:w-1/2'>
       <div className='space-y-4'>
-        <div className=''>
+        <div className='relative'>
+          {/* {!isPlaceLoaded && <Skeleton />} */}
           <div className='flex justify-end -top-0 right-0'>
             <label className='justify-center flex items-center cursor-pointer text-sm gap-1'>
               <CalendarSearch width={20} height={20} />
