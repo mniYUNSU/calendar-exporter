@@ -31,6 +31,8 @@ Combine multiple events into one calendar file.
 - CSS: Tailwind CSS
 <!-- - 画像処理: 背景画像、SVGロゴ読み込み、line-clamp テキスト制限 -->
 - i18n: next-intl
-- その他: file-saver による「〇〇〇.ics」 download
+- その他
+  - file-saver による「〇〇〇.ics」 download
+  - Google Places API
 
 ---

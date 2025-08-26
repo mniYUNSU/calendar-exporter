@@ -3,6 +3,7 @@
 import { CalendarEvent } from '@/lib/icsGenerator';
 import { Phone, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import DownloadButton from './DownloadButton';
 
 interface EventListProps {
   events: CalendarEvent[];
@@ -28,7 +29,7 @@ export default function EventList({
 
   return (
     <div
-      className={`backdrop-blur-sm border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10 bg-gradient-to-br from-ggbackground/30 to-ggprimary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className} text-ggforeground`}
+      className={`backdrop-blur-sm border border-ggprimary/20 rounded-2xl shadow-lg shadow-ggprimary/10 bg-gradient-to-br from-ggbackground/100 to-ggprimary/10 p-4 sm:p-6 w-full md:w-1/2 animate-fade-in ${className} text-ggforeground md:from-ggbackground/30`}
     >
       <h2 className='text-md font-semibold pb-2'>
         {t('events')} ({events.length})
@@ -95,6 +96,7 @@ export default function EventList({
           </li>
         ))}
       </ul>
+      <DownloadButton events={events} />
     </div>
   );
 }

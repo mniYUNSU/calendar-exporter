@@ -11,7 +11,7 @@ export default function Footer() {
       <div className='flex flex-col items-center justify-center'>
         <ShinyText
           text={t('description')}
-          className='text-sm md:text-base opacity-80 text-highlightBlur'
+          className='text-sm md:text-base text-highlightBlur'
         />
         <ShinyText
           text={t('mainTitle')}
