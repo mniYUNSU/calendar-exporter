@@ -1,7 +1,7 @@
 'use client';
 
 import { CalendarEvent } from '@/lib/icsGenerator';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
@@ -33,47 +33,90 @@ export default function EventForm({
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
-  const locationContainerRef = useRef<HTMLDivElement>(null);
+  const locationContainerRef = useRef<HTMLDivElement | null>(null);
   const locationInputRef = useRef<HTMLInputElement | null>(null);
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
+  const [refDetected, setRefDetected] = useState(false);
+
+  useEffect(() => {
+    console.log(
+      'refDetected',
+      locationContainerRef.current,
+      !locationContainerRef.current
+    );
+    setRefDetected(true);
+  }, [locationContainerRef]);
 
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    if (!apiKey || !locationContainerRef.current) return;
+    if (!apiKey || !locationContainerRef.current || !refDetected) return;
 
-    async function initAutocomplete() {
-      if (!window.google?.maps?.importLibrary || !locationContainerRef.current) return;
+    const initAutocomplete = async () => {
+      console.log(
+        'gogogogo',
+        !window.google?.maps?.importLibrary,
+        !locationContainerRef.current,
+        refDetected,
+        locationContainerRef.current
+      );
+
+      if (
+        !window.google?.maps?.importLibrary ||
+        !locationContainerRef.current ||
+        !refDetected
+      )
+        return;
+      console.log('gogogogo222');
       await window.google.maps.importLibrary('places');
-      const placeAutocomplete = new google.maps.places
-        .PlaceAutocompleteElement() as HTMLInputElement;
+      const placeAutocomplete =
+        new window.google.maps.places.PlaceAutocompleteElement() as HTMLInputElement;
       placeAutocomplete.className = 'input';
       placeAutocomplete.placeholder = t('locationPlaceholder');
-      placeAutocomplete.addEventListener('gmp-select', async ({ placePrediction }: any) => {
-        const place = placePrediction.toPlace();
-        await place.fetchFields({ fields: ['formattedAddress'] });
-        setLocation(place.formattedAddress || placeAutocomplete.value);
-      });
-      placeAutocomplete.addEventListener('input', () => {
-        setLocation(placeAutocomplete.value);
-      });
+      placeAutocomplete.addEventListener(
+        'gmp-select',
+        async ({ placePrediction }: any) => {
+          const place = placePrediction.toPlace();
+          await place.fetchFields({ fields: ['formattedAddress'] });
+          setLocation(
+            place.formattedAddress ||
+              placeAutocomplete.value ||
+              locationInputRef.current?.value ||
+              ''
+          );
+          console.log(
+            'LOG: \n\n',
+            place.formattedAddress,
+            '\n\n',
+            placeAutocomplete.value,
+            '\n\n',
+            locationInputRef.current?.value
+          );
+        }
+      );
+      // setLocation(place.formatted_address || locationInputRef.current?.value || '');
+      console.log('gogogogo2223333');
+
+      // placeAutocomplete.addEventListener('input', () => {
+      //   console.log(
+      //     'LOG22: \n\n',
+      //     '\n\n',
+      //     placeAutocomplete.value,
+      //     '\n\n',
+      //     locationInputRef.current?.value
+      //   );
+      //   setLocation(placeAutocomplete.value);
+      // });
       locationContainerRef.current.innerHTML = '';
       locationContainerRef.current.appendChild(placeAutocomplete);
       locationInputRef.current = placeAutocomplete;
-    }
-
-    if (!window.google?.maps) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
-      script.async = true;
-      script.onload = initAutocomplete;
-      document.head.appendChild(script);
-    } else {
-      initAutocomplete();
-    }
-  }, [t]);
+    };
+    // setTimeout(() => {
+    initAutocomplete();
+    // }, 300);
+  }, [refDetected]);
 
   const handleSubmit = () => {
     if (!title || !start || !end) return;
@@ -153,7 +196,7 @@ export default function EventForm({
         </div>
         <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('location')}</label>
-          <div ref={locationContainerRef} />
+          <div ref={locationContainerRef} className='border p-0' />
         </div>
         <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{t('description')}</label>

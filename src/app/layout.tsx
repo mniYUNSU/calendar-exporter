@@ -8,6 +8,7 @@ import ThemeProvider from '@/components/ThemeProvider';
 import NavigationBar from '@/components/NavigationBar';
 
 import './globals.css';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -64,6 +65,7 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const locale = await getLocale();
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -76,6 +78,13 @@ export default async function RootLayout({
             {children}
           </NextIntlClientProvider>
         </ThemeProvider>
+        <Script
+          id='google-maps-script'
+          src={`https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places&loading=async`}
+          async
+          defer
+          strategy='beforeInteractive' // Or "beforeInteractive" for earlier loading
+        />
       </body>
     </html>
   );
