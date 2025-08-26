@@ -7,7 +7,6 @@ import { useTheme } from 'next-themes';
 import { CalendarEvent } from '@/lib/icsGenerator';
 
 import EventForm from '@/components/EventForm';
-import DownloadButton from '@/components/DownloadButton';
 import EventList from '@/components/EventList';
 import Footer from '@/components/Footer';
 import ClickSpark from '@/components/ClickSpark';
@@ -35,7 +34,7 @@ export default function HomePage() {
       sparkCount={8}
       duration={400}
     >
-      <main className='min-h-screen p-4 bg-gradient-to-br from-ggbackground/70 to-ggprimary/10 text-ggforeground transition-colors flex items-center justify-center'>
+      <main className='min-h-screen p-4 bg-gradient-to-br from-ggbackground/70 to-ggprimary/10 text-ggforeground transition-colors flex justify-center'>
         <div className='w-full max-w-4xl space-y-8 animate-fade-in'>
           <div className='flex flex-col justify-center md:flex-row gap-8 md:items-start'>
             <EventForm onAdd={handleAdd} />
