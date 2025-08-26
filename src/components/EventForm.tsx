@@ -1,13 +1,19 @@
 'use client';
 
 import { CalendarEvent } from '@/lib/icsGenerator';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import DateTimeInput from './DateTimeInput';
 import KeyboardDateTimeInput from './KeyboardDateTimeInput';
 import { useTranslations } from 'next-intl';
 import { CalendarSearch, Keyboard } from 'lucide-react';
 import { RippleButton } from './magicui/RippleButton';
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 export default function EventForm({
   onAdd
@@ -27,10 +33,79 @@ export default function EventForm({
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
+  const [predictions, setPredictions] = useState<any[]>([]);
+  const autocompleteService = useRef<any>(null);
+  const placesService = useRef<any>(null);
+  const sessionToken = useRef<any>(null);
+  const locationContainerRef = useRef<HTMLDivElement>(null);
+  const locationInputRef = useRef<HTMLInputElement | null>(null);
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
   const [manualMode, setManualMode] = useState(false);
+
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) return;
+
+    function initServices() {
+      if (!window.google?.maps?.places) return;
+      autocompleteService.current = new window.google.maps.places.AutocompleteService();
+      placesService.current = new window.google.maps.places.PlacesService(
+        document.createElement('div')
+      );
+    }
+
+    if (!window.google?.maps) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
+      script.async = true;
+      script.onload = initServices;
+      document.head.appendChild(script);
+    } else {
+      initServices();
+    }
+  }, []);
+
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocation(value);
+    if (!autocompleteService.current || !value) {
+      setPredictions([]);
+      sessionToken.current = null;
+      return;
+    }
+    if (!sessionToken.current) {
+      sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+    }
+    autocompleteService.current.getPlacePredictions(
+      { input: value, sessionToken: sessionToken.current },
+      (res: any[]) => setPredictions(res || [])
+    );
+  };
+
+  const handlePredictionSelect = (prediction: any) => {
+    if (placesService.current) {
+      placesService.current.getDetails(
+        {
+          placeId: prediction.place_id,
+          fields: ['formatted_address'],
+          sessionToken: sessionToken.current
+        },
+        (place: any) => {
+          setLocation(place?.formatted_address || prediction.description);
+        }
+      );
+    } else {
+      setLocation(prediction.description);
+    }
+    setPredictions([]);
+    sessionToken.current = null;
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => setPredictions([]), 100);
+  };
 
   const handleSubmit = () => {
     if (!title || !start || !end) return;
@@ -48,6 +123,7 @@ export default function EventForm({
     setStart(getLocalDateTimeForInput());
     setEnd(getLocalDateTimeForInput());
     setLocation('');
+    setPredictions([]);
     setDescription('');
     setPhone('');
     setUrl('');
@@ -107,12 +183,29 @@ export default function EventForm({
         </div>
         <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('location')}</label>
-          <input
-            className='input'
-            placeholder={t('locationPlaceholder')}
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
+          <div className='relative' ref={locationContainerRef}>
+            <input
+              ref={locationInputRef}
+              className='input'
+              placeholder={t('locationPlaceholder')}
+              value={location}
+              onChange={handleLocationChange}
+              onBlur={handleBlur}
+            />
+            {predictions.length > 0 && (
+              <ul className='absolute z-10 mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
+                {predictions.map((p: any) => (
+                  <li
+                    key={p.place_id}
+                    className='px-3 py-2 cursor-pointer hover:bg-ggprimary/10'
+                    onMouseDown={() => handlePredictionSelect(p)}
+                  >
+                    {p.description}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
         <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{t('description')}</label>
