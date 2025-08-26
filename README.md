@@ -37,7 +37,7 @@ Combine multiple events into one calendar file.
 
 ## Environment Variables
 
-To enable Google Places suggestions for the location input, create a `.env.local` file with the following:
+To enable Google Places suggestions for the location input (via `google.maps.places.PlaceAutocompleteElement`), create a `.env.local` file with the following:
 
 ```
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key

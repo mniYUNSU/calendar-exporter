@@ -33,7 +33,8 @@ export default function EventForm({
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
-  const locationInputRef = useRef<HTMLInputElement>(null);
+  const locationContainerRef = useRef<HTMLDivElement>(null);
+  const locationInputRef = useRef<HTMLInputElement | null>(null);
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [url, setUrl] = useState('');
@@ -41,30 +42,38 @@ export default function EventForm({
 
   useEffect(() => {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    if (!apiKey || !locationInputRef.current) return;
+    if (!apiKey || !locationContainerRef.current) return;
 
     async function initAutocomplete() {
-      if (!locationInputRef.current || !window.google?.maps?.importLibrary) return;
-      const { Autocomplete } = (await window.google.maps.importLibrary('places')) as any;
-      const autocomplete = new Autocomplete(locationInputRef.current, {
-        fields: ['formatted_address']
+      if (!window.google?.maps?.importLibrary || !locationContainerRef.current) return;
+      await window.google.maps.importLibrary('places');
+      const placeAutocomplete = new google.maps.places
+        .PlaceAutocompleteElement() as HTMLInputElement;
+      placeAutocomplete.className = 'input';
+      placeAutocomplete.placeholder = t('locationPlaceholder');
+      placeAutocomplete.addEventListener('gmp-select', async ({ placePrediction }: any) => {
+        const place = placePrediction.toPlace();
+        await place.fetchFields({ fields: ['formattedAddress'] });
+        setLocation(place.formattedAddress || placeAutocomplete.value);
       });
-      autocomplete.addListener('place_changed', () => {
-        const place = autocomplete.getPlace();
-        setLocation(place.formatted_address || locationInputRef.current?.value || '');
+      placeAutocomplete.addEventListener('input', () => {
+        setLocation(placeAutocomplete.value);
       });
+      locationContainerRef.current.innerHTML = '';
+      locationContainerRef.current.appendChild(placeAutocomplete);
+      locationInputRef.current = placeAutocomplete;
     }
 
     if (!window.google?.maps) {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
       script.async = true;
       script.onload = initAutocomplete;
       document.head.appendChild(script);
     } else {
       initAutocomplete();
     }
-  }, []);
+  }, [t]);
 
   const handleSubmit = () => {
     if (!title || !start || !end) return;
@@ -82,6 +91,9 @@ export default function EventForm({
     setStart(getLocalDateTimeForInput());
     setEnd(getLocalDateTimeForInput());
     setLocation('');
+    if (locationInputRef.current) {
+      locationInputRef.current.value = '';
+    }
     setDescription('');
     setPhone('');
     setUrl('');
@@ -141,13 +153,7 @@ export default function EventForm({
         </div>
         <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('location')}</label>
-          <input
-            className='input'
-            placeholder={t('locationPlaceholder')}
-            value={location}
-            ref={locationInputRef}
-            onChange={(e) => setLocation(e.target.value)}
-          />
+          <div ref={locationContainerRef} />
         </div>
         <div className='flex flex-col'>
           <label className='text-sm font-medium mb-1'>{t('description')}</label>
