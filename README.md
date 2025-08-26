@@ -31,16 +31,8 @@ Combine multiple events into one calendar file.
 - CSS: Tailwind CSS
 <!-- - 画像処理: 背景画像、SVGロゴ読み込み、line-clamp テキスト制限 -->
 - i18n: next-intl
-- その他: file-saver による「〇〇〇.ics」 download
-
----
-
-## Environment Variables
-
-To enable Google Places suggestions for the location input, create a `.env.local` file with the following:
-
-```
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key
-```
+- その他
+  - file-saver による「〇〇〇.ics」 download
+  - Google Places API
 
 ---

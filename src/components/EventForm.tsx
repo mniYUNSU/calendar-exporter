@@ -64,7 +64,9 @@ export default function EventForm({
     init();
   }, []);
 
-  const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLocationChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = e.target.value;
     setLocation(value);
     if (!placesLoaded.current || !value) {
@@ -73,13 +75,17 @@ export default function EventForm({
       return;
     }
     if (!sessionToken.current) {
-      sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
+      sessionToken.current =
+        new window.google.maps.places.AutocompleteSessionToken();
     }
     try {
-      const { suggestions } = await window.google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
-        input: value,
-        sessionToken: sessionToken.current
-      });
+      const { suggestions } =
+        await window.google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
+          {
+            input: value,
+            sessionToken: sessionToken.current
+          }
+        );
       setSuggestions(suggestions || []);
     } catch {
       setSuggestions([]);
@@ -90,7 +96,9 @@ export default function EventForm({
     try {
       const place = suggestion.placePrediction.toPlace();
       await place.fetchFields({ fields: ['formattedAddress'] });
-      setLocation(place.formattedAddress || suggestion.placePrediction.text.text);
+      setLocation(
+        place.formattedAddress || suggestion.placePrediction.text.text
+      );
     } catch {
       setLocation(suggestion.placePrediction.text.text);
     }
@@ -191,11 +199,11 @@ export default function EventForm({
               onBlur={handleBlur}
             />
             {suggestions.length > 0 && (
-              <ul className='absolute top-full left-0 z-[1010] mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
+              <ul className='absolute top-full left-0 z-[1010] mt-2 w-full bg-ggbackground/80 backdrop-blur rounded-md shadow ring-ggprimary/50 ring-2'>
                 {suggestions.map((s: any) => (
                   <li
                     key={s.placePrediction.placeId}
-                    className='px-3 py-2 cursor-pointer hover:bg-ggprimary/10'
+                    className='text-sm px-3 py-2 cursor-pointer hover:bg-ggprimary/10 border-b text-ggforeground border-ggborder'
                     onMouseDown={() => handlePredictionSelect(s)}
                   >
                     {s.placePrediction.text.text}

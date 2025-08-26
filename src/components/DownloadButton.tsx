@@ -19,7 +19,7 @@ export default function DownloadButton({ events }: Props) {
   };
 
   return (
-    <div className='text-center mt-6'>
+    <div className='text-center mt-4 md:mt-6'>
       <RippleButton
         onClick={handleDownload}
         disabled={events.length === 0}

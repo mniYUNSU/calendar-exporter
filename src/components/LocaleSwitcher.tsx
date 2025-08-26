@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useState, useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 const locales = [
   { value: 'ko', label: '🇰🇷 한국어' },
@@ -44,12 +45,15 @@ export default function LocaleSwitcher() {
         {currentLabel?.split(' ')[0]}
       </button>
       {open && (
-        <div className='absolute right-0 top-8 w-30 bg-ggbackground border rounded-lg shadow'>
-          {locales.map((locale) => (
+        <div className='absolute right-0 top-8 w-26 border-2 border-ggprimary/50 bg-ggbackground/80 backdrop-blur rounded-md shadow'>
+          {locales.map((locale, index) => (
             <button
               key={locale.value}
               onClick={() => handleSelect(locale.value)}
-              className='block w-full border-b border-ggborder text-left px-4 py-2 text-md hover:bg-ggprimary/10'
+              className={cn(
+                `block w-full text-left px-4 py-2 text-md hover:bg-ggprimary/10 text-ggforeground border-b border-ggborder text-sm`,
+                index === 2 && `border-none`
+              )}
             >
               {locale.label}
             </button>

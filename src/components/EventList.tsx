@@ -3,6 +3,7 @@
 import { CalendarEvent } from '@/lib/icsGenerator';
 import { Phone, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import DownloadButton from './DownloadButton';
 
 interface EventListProps {
   events: CalendarEvent[];
@@ -95,6 +96,7 @@ export default function EventList({
           </li>
         ))}
       </ul>
+      <DownloadButton events={events} />
     </div>
   );
 }
