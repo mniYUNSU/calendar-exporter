@@ -188,7 +188,7 @@ export default function EventForm({
               onBlur={handleBlur}
             />
             {suggestions.length > 0 && (
-              <ul className='absolute z-10 mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
+              <ul className='absolute z-50 mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
                 {suggestions.map((s: any) => (
                   <li
                     key={s.placePrediction.placeId}
