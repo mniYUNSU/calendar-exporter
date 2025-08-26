@@ -33,10 +33,9 @@ export default function EventForm({
   const [start, setStart] = useState(getLocalDateTimeForInput());
   const [end, setEnd] = useState(getLocalDateTimeForInput());
   const [location, setLocation] = useState('');
-  const [predictions, setPredictions] = useState<any[]>([]);
-  const autocompleteService = useRef<any>(null);
-  const placesService = useRef<any>(null);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const sessionToken = useRef<any>(null);
+  const placesLoaded = useRef(false);
   const locationContainerRef = useRef<HTMLDivElement>(null);
   const locationInputRef = useRef<HTMLInputElement | null>(null);
   const [description, setDescription] = useState('');
@@ -48,63 +47,59 @@ export default function EventForm({
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey) return;
 
-    function initServices() {
-      if (!window.google?.maps?.places) return;
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-      placesService.current = new window.google.maps.places.PlacesService(
-        document.createElement('div')
-      );
+    async function init() {
+      if (!window.google?.maps) {
+        await new Promise((resolve) => {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
+          script.async = true;
+          script.onload = resolve;
+          document.head.appendChild(script);
+        });
+      }
+      await window.google.maps.importLibrary('places');
+      placesLoaded.current = true;
     }
 
-    if (!window.google?.maps) {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&v=weekly&libraries=places`;
-      script.async = true;
-      script.onload = initServices;
-      document.head.appendChild(script);
-    } else {
-      initServices();
-    }
+    init();
   }, []);
 
-  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLocationChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setLocation(value);
-    if (!autocompleteService.current || !value) {
-      setPredictions([]);
+    if (!placesLoaded.current || !value) {
+      setSuggestions([]);
       sessionToken.current = null;
       return;
     }
     if (!sessionToken.current) {
       sessionToken.current = new window.google.maps.places.AutocompleteSessionToken();
     }
-    autocompleteService.current.getPlacePredictions(
-      { input: value, sessionToken: sessionToken.current },
-      (res: any[]) => setPredictions(res || [])
-    );
+    try {
+      const { suggestions } = await window.google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: value,
+        sessionToken: sessionToken.current
+      });
+      setSuggestions(suggestions || []);
+    } catch {
+      setSuggestions([]);
+    }
   };
 
-  const handlePredictionSelect = (prediction: any) => {
-    if (placesService.current) {
-      placesService.current.getDetails(
-        {
-          placeId: prediction.place_id,
-          fields: ['formatted_address'],
-          sessionToken: sessionToken.current
-        },
-        (place: any) => {
-          setLocation(place?.formatted_address || prediction.description);
-        }
-      );
-    } else {
-      setLocation(prediction.description);
+  const handlePredictionSelect = async (suggestion: any) => {
+    try {
+      const place = suggestion.placePrediction.toPlace();
+      await place.fetchFields({ fields: ['formattedAddress'] });
+      setLocation(place.formattedAddress || suggestion.placePrediction.text.text);
+    } catch {
+      setLocation(suggestion.placePrediction.text.text);
     }
-    setPredictions([]);
+    setSuggestions([]);
     sessionToken.current = null;
   };
 
   const handleBlur = () => {
-    setTimeout(() => setPredictions([]), 100);
+    setTimeout(() => setSuggestions([]), 100);
   };
 
   const handleSubmit = () => {
@@ -123,7 +118,7 @@ export default function EventForm({
     setStart(getLocalDateTimeForInput());
     setEnd(getLocalDateTimeForInput());
     setLocation('');
-    setPredictions([]);
+    setSuggestions([]);
     setDescription('');
     setPhone('');
     setUrl('');
@@ -192,15 +187,15 @@ export default function EventForm({
               onChange={handleLocationChange}
               onBlur={handleBlur}
             />
-            {predictions.length > 0 && (
+            {suggestions.length > 0 && (
               <ul className='absolute z-10 mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
-                {predictions.map((p: any) => (
+                {suggestions.map((s: any) => (
                   <li
-                    key={p.place_id}
+                    key={s.placePrediction.placeId}
                     className='px-3 py-2 cursor-pointer hover:bg-ggprimary/10'
-                    onMouseDown={() => handlePredictionSelect(p)}
+                    onMouseDown={() => handlePredictionSelect(s)}
                   >
-                    {p.description}
+                    {s.placePrediction.text.text}
                   </li>
                 ))}
               </ul>
