@@ -178,7 +178,10 @@ export default function EventForm({
         </div>
         <div className='flex flex-col w-full max-w-sm'>
           <label className='text-sm font-medium mb-1'>{t('location')}</label>
-          <div className='relative' ref={locationContainerRef}>
+          <div
+            className={`relative ${suggestions.length > 0 ? 'z-[1000]' : ''}`}
+            ref={locationContainerRef}
+          >
             <input
               ref={locationInputRef}
               className='input'
@@ -188,7 +191,7 @@ export default function EventForm({
               onBlur={handleBlur}
             />
             {suggestions.length > 0 && (
-              <ul className='absolute z-50 mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
+              <ul className='absolute top-full left-0 z-[1010] mt-1 w-full bg-ggbackground border border-ggprimary rounded-md shadow'>
                 {suggestions.map((s: any) => (
                   <li
                     key={s.placePrediction.placeId}
