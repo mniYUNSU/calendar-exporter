@@ -31,7 +31,8 @@
     "delete": "Delete",
     "manual": "Manual Input",
     "picker": "Date Picker",
-    "events": "Events"
+    "events": "Events",
+    "dateError": "Please enter the exact date."
   },
   "Tutorial": {
     "slide1": "SukeGene lets you create events and export them as an .ics file.",

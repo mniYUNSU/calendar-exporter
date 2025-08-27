@@ -10,6 +10,8 @@ import EventForm from '@/components/EventForm';
 import EventList from '@/components/EventList';
 import Footer from '@/components/Footer';
 import ClickSpark from '@/components/ClickSpark';
+import { Toaster } from 'react-hot-toast';
+import Toast from '@/components/Toast';
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -41,8 +43,9 @@ export default function HomePage() {
             <EventList
               events={events}
               onRemove={handleRemove}
-              className='hidden md:block'
+              className='hidden md:block max-h-180 overflow-y-auto custom-scrollbar'
             />
+            <Toast />
           </div>
 
           <Footer />
@@ -60,7 +63,7 @@ export default function HomePage() {
                   <EventList
                     events={events}
                     onRemove={handleRemove}
-                    listClassName='max-h-60 overflow-y-auto'
+                    listClassName='max-h-60 overflow-y-auto custom-scrollbar'
                   />
                 </div>
                 <button

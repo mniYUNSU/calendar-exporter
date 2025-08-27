@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import Toast from './Toast';
+import toast from 'react-hot-toast';
+import { useTranslations } from 'next-intl';
 
 interface KeyboardDateTimeInputProps {
   label: string;
@@ -12,6 +13,8 @@ export default function KeyboardDateTimeInput({
   value,
   onChange
 }: KeyboardDateTimeInputProps) {
+  const t = useTranslations('EventForm');
+
   const parsed = value ? new Date(value) : null;
   const [year, setYear] = useState(() =>
     parsed ? parsed.getFullYear().toString() : ''
@@ -102,6 +105,14 @@ export default function KeyboardDateTimeInput({
     }
   }, [year, month, day, hour, minute, onChange]);
 
+  useEffect(() => {
+    if (showError) {
+      toast.error(t('dateError'));
+
+      setShowError(false);
+    }
+  }, [showError]);
+
   return (
     <div className='flex flex-col relative text-ggforeground'>
       <label className='text-sm font-medium mb-1'>{label}</label>
@@ -159,12 +170,13 @@ export default function KeyboardDateTimeInput({
           onBlur={(e) => setMinute(e.target.value.padStart(2, '0'))}
         />
       </div>
-      {showError && (
+      {/* {showError && (
         <Toast
           message='정확한 날짜를 입력해주세요.'
           onClose={() => setShowError(false)}
         />
-      )}
+
+      )} */}
     </div>
   );
 }

@@ -158,3 +158,18 @@ button {
   animation: none;
   mix-blend-mode: normal;
 }
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #d1cef8;
+    border-radius: 9999px;
+    border: 1px solid #fff;
+    border-color: color-mix(in oklab, var(--ggprimary) 20%, transparent);
+  }
+}

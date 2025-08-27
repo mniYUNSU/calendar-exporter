@@ -4,6 +4,7 @@ import { CalendarEvent } from '@/lib/icsGenerator';
 import { Phone, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import DownloadButton from './DownloadButton';
+import ShinyText from './ShinyText';
 
 interface EventListProps {
   events: CalendarEvent[];
@@ -42,25 +43,33 @@ export default function EventList({
           >
             <div className='flex justify-between items-center gap-2'>
               <div className='w-full space-y-1 break-all'>
-                <div className='font-semibold'>{event.title}</div>
+                <ShinyText
+                  text={event.title}
+                  className='text-ggforeground/70 font-semibold border-b border-ggprimary/20'
+                />
                 <div className='flex flex-row justify-between w-full'>
                   <div className='flex flex-col text-sm '>
                     <p className='font-semibold'>{t('start')}</p>
-                    <p className='text-foreground'>
-                      {formatDateTime(event.start)}
-                    </p>
+                    <ShinyText
+                      text={formatDateTime(event.start)}
+                      className='text-ggforeground/80 border-b border-ggprimary/20'
+                    />
                   </div>
                   <div className='flex flex-col text-sm '>
                     <p className='font-semibold'>{t('end')}</p>
-                    <p className='text-foreground'>
-                      {formatDateTime(event.end)}
-                    </p>
+                    <ShinyText
+                      text={formatDateTime(event.end)}
+                      className='text-ggforeground/80 border-b border-ggprimary/20'
+                    />
                   </div>
                 </div>
                 {event.location && (
                   <div className='max-w-full text-sm flex flex-row gap-2 items-start'>
                     <p className='font-semibold min-w-fit'>{t('location')}</p>
-                    <p className='w-full'>{event.location}</p>
+                    <ShinyText
+                      text={event.location}
+                      className='w-full text-ggforeground/80 border-b border-ggprimary/20'
+                    />
                   </div>
                 )}
                 {event.description && (
@@ -80,7 +89,7 @@ export default function EventList({
                 {event.url && (
                   <div className='break-all text-sm flex flex-row gap-2 items-start'>
                     <p className='font-semibold min-w-fit'>{t('url')}</p>
-                    <a href={event.url} className='text-primary underline'>
+                    <a href={event.url} className='text-ggprimary underline'>
                       {event.url}
                     </a>
                   </div>
