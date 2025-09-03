@@ -35,9 +35,10 @@
     "dateError": "Please enter the exact date."
   },
   "Tutorial": {
-    "slide1": "SukeGene lets you create events and export them as an .ics file.",
-    "slide2": "Enter the date and click the Add button.",
-    "slide3": "Click the Download button to add all events to your calendar at once!",
+    "slide1": "Add your desired events by entering dates, locations, and more with SukeGene.",
+    "slide2": "Download the added events as an .ics file.",
+    "slide3": "Open the downloaded .ics file to add it to your calendar!",
+    "slide4": "SukeGene supports Korean, Japanese, and English.",
     "next": "Next",
     "close": "Close"
   }
