@@ -45,7 +45,7 @@ export default function LocaleSwitcher() {
         {currentLabel?.split(' ')[0]}
       </button>
       {open && (
-        <div className='absolute right-0 top-8 w-26 border-2 border-ggprimary/50 bg-ggbackground/80 backdrop-blur rounded-md shadow'>
+        <div className='absolute right-0 top-8 w-30 border-2 border-ggprimary/50 bg-ggbackground/80 backdrop-blur rounded-md shadow'>
           {locales.map((locale, index) => (
             <button
               key={locale.value}

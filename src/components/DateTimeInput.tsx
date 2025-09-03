@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko, ja, enUS } from 'date-fns/locale';
 import { useLocale } from 'next-intl';
+import { CustomDateTimeInput } from './CustomDateTimeInput';
 
 export default function DateTimeInput({
   start,
@@ -22,9 +23,10 @@ export default function DateTimeInput({
   const dateLocale = locale === 'ko' ? ko : locale === 'ja' ? ja : enUS;
 
   return (
-    <div className='flex flex-row gap-4 justify-between text-ggforeground'>
+    <div className='flex flex-col gap-4 justify-between text-ggforeground'>
       <div className='flex flex-col'>
         <label className='text-sm font-medium mb-1'>{labels.start}</label>
+        {/* <CustomDateTimeInput /> */}
         <DatePicker
           onKeyDown={(e) => {
             e.preventDefault();
@@ -44,6 +46,10 @@ export default function DateTimeInput({
       <div className='flex flex-col'>
         <label className='text-sm font-medium mb-1'>{labels.end}</label>
         <DatePicker
+          onKeyDown={(e) => {
+            e.preventDefault();
+          }}
+          onFocus={(e) => e.target.blur()}
           selected={end}
           onChange={onChangeEnd}
           showTimeSelect

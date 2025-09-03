@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { ReactNode } from 'react';
 import { getLocale, getTranslations } from 'next-intl/server';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
 import ThemeProvider from '@/components/ThemeProvider';
@@ -20,6 +20,12 @@ const geistMono = Geist_Mono({
 });
 
 const locales = ['en', 'ko', 'ja'] as const;
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  maximumScale: 1.0
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
